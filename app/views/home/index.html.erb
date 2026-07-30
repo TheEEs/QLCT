@@ -1,0 +1,319 @@
+<% if authenticated? %>
+  <div class="space-y-8 w-full animate-fade-in">
+    <!-- Header Greeting -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-base-100 p-6 rounded-2xl border border-base-300 shadow-sm">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight">Chào mừng quay trở lại!</h1>
+        <p class="text-sm opacity-60">Quản lý tài chính cho <span class="font-semibold text-primary"><%= Current.session.user.email_address %></span></p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-primary btn-sm md:btn-md gap-2 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          Thêm chi tiêu
+        </button>
+        <button class="btn btn-outline btn-sm md:btn-md">Xuất PDF</button>
+      </div>
+    </div>
+
+    <!-- Stats Dashboard Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Card 1: Balance -->
+      <div class="card bg-base-100 border border-base-300 shadow-sm hover:border-success/30 transition-all duration-200">
+        <div class="card-body p-5">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-semibold opacity-60">Tổng số dư</span>
+            <div class="p-2 bg-success/10 rounded-xl text-success">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <p class="text-3xl font-extrabold tracking-tight">3.512.450 ₫</p>
+          <div class="flex items-center gap-1 mt-2 text-xs text-success font-semibold">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+            </svg>
+            <span>+12.5% so với tháng trước</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Income -->
+      <div class="card bg-base-100 border border-base-300 shadow-sm hover:border-primary/30 transition-all duration-200">
+        <div class="card-body p-5">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-semibold opacity-60">Thu nhập tháng</span>
+            <div class="p-2 bg-primary/10 rounded-xl text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            </div>
+          </div>
+          <p class="text-3xl font-extrabold tracking-tight">5.240.000 ₫</p>
+          <div class="flex items-center gap-1 mt-2 text-xs opacity-60">
+            <span>Lương cố định & Làm thêm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Expenses -->
+      <div class="card bg-base-100 border border-base-300 shadow-sm hover:border-error/30 transition-all duration-200">
+        <div class="card-body p-5">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-semibold opacity-60">Chi tiêu tháng</span>
+            <div class="p-2 bg-error/10 rounded-xl text-error">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" />
+              </svg>
+            </div>
+          </div>
+          <p class="text-3xl font-extrabold tracking-tight">1.727.550 ₫</p>
+          <div class="flex items-center gap-1 mt-2 text-xs text-error font-semibold">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12 13a1 1 0 110 2H7a1 1 0 01-1-1V9a1 1 0 112 0v2.586l4.293-4.293a1 1 0 011.414 0L12 10.414l4.293-4.293a1 1 0 111.414 1.414l-5 5a1 1 0 01-1.414 0L11 9.414 7.414 13H12z" clip-rule="evenodd" />
+            </svg>
+            <span>+3.4% so với tháng trước</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Section: Transactions + Budget -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Recent Transactions (Left) -->
+      <div class="lg:col-span-2 card bg-base-100 border border-base-300 shadow-sm">
+        <div class="card-body p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold">Giao dịch gần đây</h2>
+            <button class="btn btn-ghost btn-xs text-primary font-semibold">Xem tất cả</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="table table-sm w-full">
+              <thead>
+                <tr>
+                  <th>Mô tả</th>
+                  <th>Danh mục</th>
+                  <th>Ngày</th>
+                  <th class="text-right">Số tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="hover:bg-base-200/40">
+                  <td>
+                    <div class="flex items-center gap-2 py-1">
+                      <span class="text-lg">🍔</span>
+                      <span class="font-bold text-sm">McDonald's</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-sm badge-outline badge-warning font-semibold">Ăn uống</span></td>
+                  <td class="text-xs opacity-60">Hôm nay</td>
+                  <td class="text-right font-bold text-error">-125.000 ₫</td>
+                </tr>
+                <tr class="hover:bg-base-200/40">
+                  <td>
+                    <div class="flex items-center gap-2 py-1">
+                      <span class="text-lg">💼</span>
+                      <span class="font-bold text-sm">Lương hàng tháng</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-sm badge-outline badge-success font-semibold">Thu nhập</span></td>
+                  <td class="text-xs opacity-60">Hôm qua</td>
+                  <td class="text-right font-bold text-success">+25.000.000 ₫</td>
+                </tr>
+                <tr class="hover:bg-base-200/40">
+                  <td>
+                    <div class="flex items-center gap-2 py-1">
+                      <span class="text-lg">🚗</span>
+                      <span class="font-bold text-sm">Chuyến đi Grab</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-sm badge-outline badge-info font-semibold">Di chuyển</span></td>
+                  <td class="text-xs opacity-60">24 thg 10, 2026</td>
+                  <td class="text-right font-bold text-error">-221.000 ₫</td>
+                </tr>
+                <tr class="hover:bg-base-200/40">
+                  <td>
+                    <div class="flex items-center gap-2 py-1">
+                      <span class="text-lg">🛍️</span>
+                      <span class="font-bold text-sm">Đăng ký AppStore</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-sm badge-outline badge-primary font-semibold">Dịch vụ</span></td>
+                  <td class="text-xs opacity-60">22 thg 10, 2026</td>
+                  <td class="text-right font-bold text-error">-99.000 ₫</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget & Categories (Right) -->
+      <div class="card bg-base-100 border border-base-300 shadow-sm">
+        <div class="card-body p-6">
+          <h2 class="text-lg font-bold mb-4">Ngân sách tháng</h2>
+          <div class="space-y-4">
+            <!-- Item 1: Food -->
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold">🍔 Ăn uống & Ẩm thực</span>
+                <span class="opacity-60 font-semibold">3.500.000 / 5.000.000 ₫</span>
+              </div>
+              <progress class="progress progress-warning w-full" value="70" max="100"></progress>
+            </div>
+            <!-- Item 2: Transport -->
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold">🚗 Di chuyển</span>
+                <span class="opacity-60 font-semibold">1.200.000 / 2.000.000 ₫</span>
+              </div>
+              <progress class="progress progress-info w-full" value="60" max="100"></progress>
+            </div>
+            <!-- Item 3: Shopping -->
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold">🛍️ Mua sắm</span>
+                <span class="opacity-60 font-semibold">2.800.000 / 3.000.000 ₫</span>
+              </div>
+              <progress class="progress progress-error w-full" value="93" max="100"></progress>
+            </div>
+            <!-- Item 4: Rent -->
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold">🏠 Nhà ở & Tiền điện nước</span>
+                <span class="opacity-60 font-semibold">8.500.000 / 9.000.000 ₫</span>
+              </div>
+              <progress class="progress progress-primary w-full" value="94" max="100"></progress>
+            </div>
+          </div>
+          <div class="divider my-2"></div>
+          <div class="bg-base-200 p-3 rounded-xl flex items-center gap-3">
+            <span class="text-2xl">💡</span>
+            <p class="text-xs opacity-80 leading-snug">
+              Bạn đã tiêu hết <span class="font-bold text-error">93%</span> ngân sách Mua sắm. Hãy cân nhắc hoãn các khoản mua chưa thực sự cần thiết!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <!-- Landing / Hero Section for Guest Users -->
+  <div class="space-y-16 py-12 animate-fade-in w-full">
+    <div class="hero max-w-4xl mx-auto">
+      <div class="hero-content flex-col lg:flex-row gap-12 p-0 text-center lg:text-left">
+        <div class="flex-1 space-y-6">
+          <div class="badge badge-outline badge-primary font-bold tracking-wider px-3 py-1 text-xs uppercase">
+            Giới thiệu Ứng dụng QLCT
+          </div>
+          <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-none">
+            Quản lý Chi tiêu <br class="hidden md:inline" />
+            <span class="bg-gradient-to-r from-primary via-purple-500 to-secondary bg-clip-text text-transparent">Thông minh</span> <br />
+            Cực kỳ Đơn giản.
+          </h1>
+          <p class="text-md opacity-75 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+            Kiểm soát hoàn toàn tài chính cá nhân của bạn. Theo dõi chi tiêu, thiết lập ngân sách thực tế và gia tăng tích lũy với giao diện trực quan, tinh gọn và tuyệt đẹp của QLCT.
+          </p>
+          <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-3">
+            <%= link_to "Bắt đầu ngay", new_registration_path, class: "btn btn-primary shadow-lg shadow-primary/20 gap-2 font-bold px-6" %>
+            <a href="#learn-more" class="btn btn-ghost border-base-300 hover:bg-base-200/50">Tìm hiểu thêm</a>
+          </div>
+        </div>
+
+        <!-- Graphic / Card Mockup (Right) -->
+        <div class="flex-1 w-full max-w-sm mx-auto relative">
+          <!-- Main Visual card -->
+          <div class="card bg-base-100 border border-base-300 shadow-xl relative z-10 p-2 md:p-4 hover:scale-[1.02] transition-transform duration-300">
+            <div class="card-body gap-4 p-4 md:p-6">
+              <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-bold">Q</div>
+                  <div>
+                    <h4 class="font-bold text-xs">Chi tiêu của tôi</h4>
+                    <p class="text-[10px] opacity-60">Vừa cập nhật xong</p>
+                  </div>
+                </div>
+                <span class="badge badge-success badge-sm font-bold text-[10px]">+14.2%</span>
+              </div>
+
+              <!-- Big Balance representation -->
+              <div class="space-y-1">
+                <p class="text-xs opacity-60 font-semibold">Số dư khả dụng</p>
+                <p class="text-3xl font-black tracking-tight">4.890.000 ₫</p>
+              </div>
+
+              <!-- Mini Bar chart mockups -->
+              <div class="space-y-2 mt-2">
+                <div class="flex justify-between text-[10px] font-semibold">
+                  <span>🏠 Nhà ở & Hóa đơn</span>
+                  <span class="opacity-60">950.000 / 1.200.000 ₫</span>
+                </div>
+                <progress class="progress progress-primary h-1.5 w-full" value="79" max="100"></progress>
+
+                <div class="flex justify-between text-[10px] font-semibold mt-1">
+                  <span>🍔 Ăn uống & Đi chợ</span>
+                  <span class="opacity-60">420.000 / 600.000 ₫</span>
+                </div>
+                <progress class="progress progress-warning h-1.5 w-full" value="70" max="100"></progress>
+              </div>
+            </div>
+          </div>
+          <!-- Decorative Background Accents -->
+          <div class="absolute -top-6 -left-6 w-32 h-32 bg-primary/10 rounded-full filter blur-xl z-0"></div>
+          <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-secondary/10 rounded-full filter blur-xl z-0"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div id="learn-more" class="pt-12 border-t border-base-300/60">
+      <div class="text-center max-w-lg mx-auto mb-10 space-y-2">
+        <h3 class="text-2xl font-bold tracking-tight">Tất cả những gì bạn cần ở một nơi</h3>
+        <p class="text-sm opacity-60">Các công cụ đơn giản nhưng mạnh mẽ giúp bạn có được sự minh bạch về tài chính.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Feature 1 -->
+        <div class="flex gap-4 p-5 rounded-xl bg-base-100 border border-base-300/80 shadow-sm">
+          <div class="p-3 rounded-lg bg-primary/10 text-primary h-fit">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-bold text-sm">Theo dõi thời gian thực</h4>
+            <p class="text-xs opacity-75 leading-relaxed">Ghi chép nhanh các khoản chi khi vừa mua sắm. Gắn nhãn phân loại tự động cực tiện lợi.</p>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="flex gap-4 p-5 rounded-xl bg-base-100 border border-base-300/80 shadow-sm">
+          <div class="p-3 rounded-lg bg-secondary/10 text-secondary h-fit">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-bold text-sm">Phân tích trực quan</h4>
+            <p class="text-xs opacity-75 leading-relaxed">Thanh tiến độ tinh tế và dữ liệu sinh động minh họa rõ ràng thói quen dùng tiền hàng tháng.</p>
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="flex gap-4 p-5 rounded-xl bg-base-100 border border-base-300/80 shadow-sm">
+          <div class="p-3 rounded-lg bg-accent/10 text-accent h-fit">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-bold text-sm">Riêng tư & Bảo mật</h4>
+            <p class="text-xs opacity-75 leading-relaxed">Được bảo mật hoàn chỉnh với cơ chế mã hóa mật khẩu, mã hóa TLS và lưu cookie phiên an toàn.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

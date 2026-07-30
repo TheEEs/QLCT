@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html class="bg-base-200 min-h-screen flex flex-col">
+  <head>
+    <title><%= content_for(:title) || "QLCT - Quản lý chi tiêu" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="QLCT">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-base-200 text-base-content font-sans antialiased min-h-screen flex flex-col">
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 w-full border-b border-base-300 bg-base-100/80 backdrop-blur">
+      <div class="navbar container mx-auto px-4 md:px-8">
+        <div class="flex-1">
+          <%= link_to root_path, class: "btn btn-ghost text-xl font-bold gap-2 normal-case tracking-tight hover:bg-base-200/50" do %>
+            <span class="text-2xl">💸</span>
+            <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-black">QLCT</span>
+          <% end %>
+        </div>
+
+        <div class="flex-none gap-4">
+          <% if authenticated? %>
+            <div class="dropdown dropdown-end">
+              <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
+                <div class="bg-neutral text-neutral-content rounded-full w-10">
+                  <span class="text-xs uppercase"><%= Current.session.user.email_address[0..1] %></span>
+                </div>
+              </div>
+              <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 border border-base-200">
+                <li class="menu-title px-4 py-2 text-xs font-semibold opacity-60"><%= Current.session.user.email_address %></li>
+                <div class="divider my-1"></div>
+                <li>
+                  <%= button_to session_path, method: :delete, class: "flex items-center gap-2 text-error hover:bg-error/10 w-full text-left" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Đăng xuất
+                  <% end %>
+                </li>
+              </ul>
+            </div>
+          <% else %>
+            <%= link_to "Đăng nhập", new_session_path, class: "btn btn-primary btn-sm px-4" %>
+          <% end %>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 md:px-8 py-8 max-w-4xl flex flex-col justify-center">
+      <!-- Flash Messages -->
+      <div class="w-full max-w-md mx-auto mb-6">
+        <% if alert = flash[:alert] %>
+          <div role="alert" class="alert alert-error shadow-sm mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span><%= alert %></span>
+          </div>
+        <% end %>
+
+        <% if notice = flash[:notice] %>
+          <div role="alert" class="alert alert-success shadow-sm mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span><%= notice %></span>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Page Content -->
+      <%= yield %>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer footer-center p-6 bg-base-100 text-base-content border-t border-base-300">
+      <aside>
+        <p class="font-medium text-sm">
+          💸 <span class="font-bold">QLCT</span> - Quản lý Chi tiêu Đơn giản & Tinh tế
+        </p>
+        <p class="text-xs opacity-60">Bản quyền © <%= Time.current.year %> - Bảo lưu mọi quyền</p>
+      </aside>
+    </footer>
+  </body>
+</html>

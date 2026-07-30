@@ -1,0 +1,49 @@
+<div class="w-full max-w-md mx-auto animate-fade-in py-6">
+  <div class="card bg-base-100 border border-base-300 shadow-xl">
+    <div class="card-body gap-6 p-6 sm:p-10">
+      <div class="text-center space-y-2">
+        <div class="text-4xl">✨</div>
+        <h1 class="text-2xl font-black tracking-tight">Đăng ký tài khoản</h1>
+        <p class="text-sm opacity-60">Tạo tài khoản mới để bắt đầu hành trình quản lý tài chính</p>
+      </div>
+
+      <%= form_with model: @user, url: registrations_path, class: "space-y-4" do |form| %>
+        <% if @user.errors.any? %>
+          <div role="alert" class="alert alert-error shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <h3 class="font-bold text-xs">Vui lòng kiểm tra lại:</h3>
+              <ul class="list-disc list-inside text-xs mt-1">
+                <% @user.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="form-control">
+          <%= form.label :email_address, "Địa chỉ Email", class: "label-text font-semibold text-xs mb-1.5 opacity-70" %>
+          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com", class: "input input-bordered w-full focus:input-primary transition-all duration-200" %>
+        </div>
+
+        <div class="form-control">
+          <%= form.label :password, "Mật khẩu", class: "label-text font-semibold text-xs mb-1.5 opacity-70" %>
+          <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Tối thiểu 6 ký tự", class: "input input-bordered w-full focus:input-primary transition-all duration-200" %>
+        </div>
+
+        <div class="form-control">
+          <%= form.label :password_confirmation, "Xác nhận mật khẩu", class: "label-text font-semibold text-xs mb-1.5 opacity-70" %>
+          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Nhập lại mật khẩu", class: "input input-bordered w-full focus:input-primary transition-all duration-200" %>
+        </div>
+
+        <div class="form-control pt-2 space-y-2">
+          <%= form.submit "Đăng Ký Tài Khoản", class: "btn btn-primary w-full shadow-md shadow-primary/20 font-bold" %>
+          <%= link_to "Đã có tài khoản? Đăng nhập", new_session_path, class: "btn btn-ghost btn-sm w-full font-semibold" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

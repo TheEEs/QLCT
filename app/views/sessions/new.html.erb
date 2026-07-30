@@ -1,0 +1,31 @@
+<div class="w-full max-w-md mx-auto animate-fade-in py-6">
+  <div class="card bg-base-100 border border-base-300 shadow-xl">
+    <div class="card-body gap-6 p-6 sm:p-10">
+      <div class="text-center space-y-2">
+        <div class="text-4xl">💸</div>
+        <h1 class="text-2xl font-black tracking-tight">Đăng nhập vào QLCT</h1>
+        <p class="text-sm opacity-60">Nhập thông tin tài khoản của bạn dưới đây để bắt đầu quản lý chi tiêu</p>
+      </div>
+
+      <%= form_with url: session_url, class: "space-y-4" do |form| %>
+        <div class="form-control">
+          <%= form.label :email_address, "Địa chỉ Email", class: "label-text font-semibold text-xs mb-1.5 opacity-70" %>
+          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com", value: params[:email_address], class: "input input-bordered w-full focus:input-primary transition-all duration-200" %>
+        </div>
+
+        <div class="form-control">
+          <div class="flex justify-between items-center mb-1.5">
+            <%= form.label :password, "Mật khẩu", class: "label-text font-semibold text-xs opacity-70" %>
+            <%= link_to "Quên mật khẩu?", new_password_path, class: "label-text-alt link link-hover link-primary text-xs font-semibold" %>
+          </div>
+          <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "••••••••", maxlength: 72, class: "input input-bordered w-full focus:input-primary transition-all duration-200" %>
+        </div>
+
+        <div class="form-control pt-2 space-y-2">
+          <%= form.submit "Đăng nhập", class: "btn btn-primary w-full shadow-md shadow-primary/20 font-bold" %>
+          <%= link_to "Chưa có tài khoản? Đăng ký ngay", new_registration_path, class: "btn btn-ghost btn-sm w-full font-semibold" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

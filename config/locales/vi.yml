@@ -1,0 +1,22 @@
+vi:
+  hello: "Xin chào thế giới"
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "Kiểm tra lỗi: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "Không thể xóa bản ghi vì có liên kết phụ thuộc %{record}"
+          has_many: "Không thể xóa bản ghi vì có các liên kết phụ thuộc %{record}"
+    models:
+      user: "Người dùng"
+    attributes:
+      user:
+        email_address: "Địa chỉ Email"
+        password: "Mật khẩu"
+        password_confirmation: "Xác nhận mật khẩu"
+  errors:
+    messages:
+      blank: "không được để trống"
+      taken: "đã được sử dụng"
+      invalid: "không hợp lệ"
+      too_short: "quá ngắn (tối thiểu %{count} ký tự)"
