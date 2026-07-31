@@ -35,6 +35,7 @@
 
 .pagy > :not([hidden]) ~ :not([hidden]) {
   margin-inline-start: var(--spacing);
+  @apply mx-2;
 }
 
 .pagy a:not([role="separator"]) { /* all but gaps */
@@ -45,6 +46,7 @@
   border: var(--border-width) solid var(--background-current);
   border-radius: var(--rounding);
   color: inherit;
+  @apply bg-base-300 text-base-content;
 }
 
 .pagy a[href]:hover { /* all links on hover */
