@@ -84,11 +84,11 @@
                     <%= current_sort_label %>
                   </div>
                   <ul tabindex="0" class="dropdown-content menu menu-sm p-2 shadow-xl bg-base-100 rounded-box w-52 border border-base-200 z-[1] mt-1">
-                    <li><%= link_to t("transactions.sort.date_desc"), transactions_path(sort: "created_at", direction: "desc", items: params[:items]), class: "#{'active font-bold' if current_sort_key == 'created_at_desc'}" %></li>
-                    <li><%= link_to t("transactions.sort.date_asc"), transactions_path(sort: "created_at", direction: "asc", items: params[:items]), class: "#{'active font-bold' if current_sort_key == 'created_at_asc'}" %></li>
+                    <li><%= link_to t("transactions.sort.date_desc"), transactions_path(sort: "created_at", direction: "desc", items: params[:items], page: params[:page]), class: "#{'active font-bold' if current_sort_key == 'created_at_desc'}" %></li>
+                    <li><%= link_to t("transactions.sort.date_asc"), transactions_path(sort: "created_at", direction: "asc", items: params[:items], page: params[:page]), class: "#{'active font-bold' if current_sort_key == 'created_at_asc'}" %></li>
                     <div class="divider my-1"></div>
-                    <li><%= link_to t("transactions.sort.total_desc"), transactions_path(sort: "total", direction: "desc", items: params[:items]), class: "#{'active font-bold' if current_sort_key == 'total_desc'}" %></li>
-                    <li><%= link_to t("transactions.sort.total_asc"), transactions_path(sort: "total", direction: "asc", items: params[:items]), class: "#{'active font-bold' if current_sort_key == 'total_asc'}" %></li>
+                    <li><%= link_to t("transactions.sort.total_desc"), transactions_path(sort: "total", direction: "desc", items: params[:items], page: params[:page]), class: "#{'active font-bold' if current_sort_key == 'total_desc'}" %></li>
+                    <li><%= link_to t("transactions.sort.total_asc"), transactions_path(sort: "total", direction: "asc", items: params[:items], page: params[:page]), class: "#{'active font-bold' if current_sort_key == 'total_asc'}" %></li>
                   </ul>
                 </div>
               </div>
