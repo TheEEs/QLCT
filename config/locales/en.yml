@@ -29,3 +29,42 @@
 
 en:
   hello: "Hello world"
+  pundit:
+    errors:
+      not_authorized: "You are not authorized to perform this action."
+  transactions:
+    sort:
+      label: "Sort by:"
+      date_desc: "Date: Newest"
+      date_asc: "Date: Oldest"
+      total_desc: "Amount: High to Low"
+      total_asc: "Amount: Low to High"
+  password_changes:
+    edit:
+      title: "Change Password"
+      subtitle: "Please fill in the information below to change your account password"
+      errors_title: "An error occurred:"
+      current_password: "Current Password"
+      new_password: "New Password"
+      password_hint: "New password must be at least 6 characters."
+      password_confirmation: "Confirm New Password"
+      submit_button: "Change Password"
+      cancel_button: "Cancel"
+    update:
+      success: "Password has been successfully changed."
+    errors:
+      incorrect: "is incorrect"
+  activerecord:
+    models:
+      user: "User"
+    attributes:
+      user:
+        email_address: "Email Address"
+        password: "Password"
+        password_confirmation: "Password Confirmation"
+        current_password: "Current Password"
+  errors:
+    messages:
+      blank: "can't be blank"
+      confirmation: "doesn't match %{attribute}"
+      wrong_credentials: Try another email address or password.

@@ -7,13 +7,13 @@
         <p class="text-sm opacity-60">Quản lý tài chính cho <span class="font-semibold text-primary"><%= Current.session.user.email_address %></span></p>
       </div>
       <div class="flex gap-2">
-        <button class="btn btn-primary btn-sm md:btn-md gap-2 shadow-sm">
+        <%= link_to new_transaction_path, class: "btn btn-primary btn-sm md:btn-md gap-2 shadow-sm" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
           Thêm chi tiêu
-        </button>
-        <button class="btn btn-outline btn-sm md:btn-md">Xuất PDF</button>
+        <% end %>
+        <%= link_to "Xem tất cả", transactions_path, class: "btn btn-outline btn-sm md:btn-md" %>
       </div>
     </div>
 
@@ -23,37 +23,39 @@
       <div class="card bg-base-100 border border-base-300 shadow-sm hover:border-success/30 transition-all duration-200">
         <div class="card-body p-5">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-semibold opacity-60">Tổng số dư</span>
+            <span class="text-sm font-semibold opacity-60">Số dư khả dụng (Ước tính)</span>
             <div class="p-2 bg-success/10 rounded-xl text-success">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
           </div>
-          <p class="text-3xl font-extrabold tracking-tight">3.512.450 ₫</p>
-          <div class="flex items-center gap-1 mt-2 text-xs text-success font-semibold">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
-            </svg>
-            <span>+12.5% so với tháng trước</span>
+          <% 
+            estimated_balance = 50_000_000 - @total_expenses
+          %>
+          <p class="text-3xl font-extrabold tracking-tight">
+            <%= number_to_currency(estimated_balance, unit: "₫", precision: 0, format: "%n %u") %>
+          </p>
+          <div class="flex items-center gap-1 mt-2 text-xs opacity-60">
+            <span>Dựa trên hạn mức chi tiêu ban đầu</span>
           </div>
         </div>
       </div>
 
-      <!-- Card 2: Income -->
+      <!-- Card 2: Limit -->
       <div class="card bg-base-100 border border-base-300 shadow-sm hover:border-primary/30 transition-all duration-200">
         <div class="card-body p-5">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-semibold opacity-60">Thu nhập tháng</span>
+            <span class="text-sm font-semibold opacity-60">Hạn mức tháng</span>
             <div class="p-2 bg-primary/10 rounded-xl text-primary">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
             </div>
           </div>
-          <p class="text-3xl font-extrabold tracking-tight">5.240.000 ₫</p>
+          <p class="text-3xl font-extrabold tracking-tight">50.000.000 ₫</p>
           <div class="flex items-center gap-1 mt-2 text-xs opacity-60">
-            <span>Lương cố định & Làm thêm</span>
+            <span>Hạn mức mặc định ban đầu</span>
           </div>
         </div>
       </div>
@@ -62,19 +64,18 @@
       <div class="card bg-base-100 border border-base-300 shadow-sm hover:border-error/30 transition-all duration-200">
         <div class="card-body p-5">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-semibold opacity-60">Chi tiêu tháng</span>
+            <span class="text-sm font-semibold opacity-60">Tổng chi tiêu đã ghi nhận</span>
             <div class="p-2 bg-error/10 rounded-xl text-error">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" />
               </svg>
             </div>
           </div>
-          <p class="text-3xl font-extrabold tracking-tight">1.727.550 ₫</p>
-          <div class="flex items-center gap-1 mt-2 text-xs text-error font-semibold">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M12 13a1 1 0 110 2H7a1 1 0 01-1-1V9a1 1 0 112 0v2.586l4.293-4.293a1 1 0 011.414 0L12 10.414l4.293-4.293a1 1 0 111.414 1.414l-5 5a1 1 0 01-1.414 0L11 9.414 7.414 13H12z" clip-rule="evenodd" />
-            </svg>
-            <span>+3.4% so với tháng trước</span>
+          <p class="text-3xl font-extrabold tracking-tight text-error">
+            <%= number_to_currency(@total_expenses, unit: "₫", precision: 0, format: "%n %u") %>
+          </p>
+          <div class="flex items-center gap-1 mt-2 text-xs opacity-60">
+            <span>Cập nhật theo thời gian thực</span>
           </div>
         </div>
       </div>
@@ -87,66 +88,46 @@
         <div class="card-body p-6">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-lg font-bold">Giao dịch gần đây</h2>
-            <button class="btn btn-ghost btn-xs text-primary font-semibold">Xem tất cả</button>
+            <%= link_to "Xem tất cả", transactions_path, class: "btn btn-ghost btn-xs text-primary font-semibold" %>
           </div>
-          <div class="overflow-x-auto">
-            <table class="table table-sm w-full">
-              <thead>
-                <tr>
-                  <th>Mô tả</th>
-                  <th>Danh mục</th>
-                  <th>Ngày</th>
-                  <th class="text-right">Số tiền</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="hover:bg-base-200/40">
-                  <td>
-                    <div class="flex items-center gap-2 py-1">
-                      <span class="text-lg">🍔</span>
-                      <span class="font-bold text-sm">McDonald's</span>
-                    </div>
-                  </td>
-                  <td><span class="badge badge-sm badge-outline badge-warning font-semibold">Ăn uống</span></td>
-                  <td class="text-xs opacity-60">Hôm nay</td>
-                  <td class="text-right font-bold text-error">-125.000 ₫</td>
-                </tr>
-                <tr class="hover:bg-base-200/40">
-                  <td>
-                    <div class="flex items-center gap-2 py-1">
-                      <span class="text-lg">💼</span>
-                      <span class="font-bold text-sm">Lương hàng tháng</span>
-                    </div>
-                  </td>
-                  <td><span class="badge badge-sm badge-outline badge-success font-semibold">Thu nhập</span></td>
-                  <td class="text-xs opacity-60">Hôm qua</td>
-                  <td class="text-right font-bold text-success">+25.000.000 ₫</td>
-                </tr>
-                <tr class="hover:bg-base-200/40">
-                  <td>
-                    <div class="flex items-center gap-2 py-1">
-                      <span class="text-lg">🚗</span>
-                      <span class="font-bold text-sm">Chuyến đi Grab</span>
-                    </div>
-                  </td>
-                  <td><span class="badge badge-sm badge-outline badge-info font-semibold">Di chuyển</span></td>
-                  <td class="text-xs opacity-60">24 thg 10, 2026</td>
-                  <td class="text-right font-bold text-error">-221.000 ₫</td>
-                </tr>
-                <tr class="hover:bg-base-200/40">
-                  <td>
-                    <div class="flex items-center gap-2 py-1">
-                      <span class="text-lg">🛍️</span>
-                      <span class="font-bold text-sm">Đăng ký AppStore</span>
-                    </div>
-                  </td>
-                  <td><span class="badge badge-sm badge-outline badge-primary font-semibold">Dịch vụ</span></td>
-                  <td class="text-xs opacity-60">22 thg 10, 2026</td>
-                  <td class="text-right font-bold text-error">-99.000 ₫</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          
+          <% if @transactions.any? %>
+            <div class="overflow-x-auto">
+              <table class="table table-sm w-full">
+                <thead>
+                  <tr>
+                    <th>Mô tả</th>
+                    <th>Thời gian</th>
+                    <th class="text-right">Số tiền</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @transactions.each do |transaction| %>
+                    <tr class="hover:bg-base-200/40">
+                      <td>
+                        <div class="flex items-center gap-2 py-1">
+                          <span class="text-lg">🍔</span>
+                          <span class="font-bold text-sm"><%= transaction.purpose %></span>
+                        </div>
+                      </td>
+                      <td class="text-xs opacity-60">
+                        <%= l(transaction.created_at, format: :short) rescue transaction.created_at.strftime("%d/%m/%Y") %>
+                      </td>
+                      <td class="text-right font-bold text-error">
+                        -<%= number_to_currency(transaction.total, unit: "₫", precision: 0, format: "%n %u") %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <div class="text-center py-8 space-y-3">
+              <div class="text-4xl">🛍️</div>
+              <p class="text-sm opacity-60">Bạn chưa ghi chép chi tiêu nào.</p>
+              <%= link_to "Ghi nhận chi tiêu đầu tiên", new_transaction_path, class: "btn btn-primary btn-xs" %>
+            </div>
+          <% end %>
         </div>
       </div>
 
@@ -159,40 +140,33 @@
             <div>
               <div class="flex justify-between text-xs mb-1">
                 <span class="font-semibold">🍔 Ăn uống & Ẩm thực</span>
-                <span class="opacity-60 font-semibold">3.500.000 / 5.000.000 ₫</span>
+                <span class="opacity-60 font-semibold"><%= number_to_currency([@total_expenses, 5_000_000].min, unit: "₫", precision: 0, format: "%n %u") %> / 5.000.000 ₫</span>
               </div>
-              <progress class="progress progress-warning w-full" value="70" max="100"></progress>
+              <% food_percent = [((@total_expenses.to_f / 5_000_000) * 100).round, 100].min %>
+              <progress class="progress progress-warning w-full" value="<%= food_percent %>" max="100"></progress>
             </div>
             <!-- Item 2: Transport -->
             <div>
               <div class="flex justify-between text-xs mb-1">
                 <span class="font-semibold">🚗 Di chuyển</span>
-                <span class="opacity-60 font-semibold">1.200.000 / 2.000.000 ₫</span>
+                <span class="opacity-60 font-semibold">0 / 2.000.000 ₫</span>
               </div>
-              <progress class="progress progress-info w-full" value="60" max="100"></progress>
+              <progress class="progress progress-info w-full" value="0" max="100"></progress>
             </div>
             <!-- Item 3: Shopping -->
             <div>
               <div class="flex justify-between text-xs mb-1">
                 <span class="font-semibold">🛍️ Mua sắm</span>
-                <span class="opacity-60 font-semibold">2.800.000 / 3.000.000 ₫</span>
+                <span class="opacity-60 font-semibold">0 / 3.000.000 ₫</span>
               </div>
-              <progress class="progress progress-error w-full" value="93" max="100"></progress>
-            </div>
-            <!-- Item 4: Rent -->
-            <div>
-              <div class="flex justify-between text-xs mb-1">
-                <span class="font-semibold">🏠 Nhà ở & Tiền điện nước</span>
-                <span class="opacity-60 font-semibold">8.500.000 / 9.000.000 ₫</span>
-              </div>
-              <progress class="progress progress-primary w-full" value="94" max="100"></progress>
+              <progress class="progress progress-error w-full" value="0" max="100"></progress>
             </div>
           </div>
           <div class="divider my-2"></div>
           <div class="bg-base-200 p-3 rounded-xl flex items-center gap-3">
             <span class="text-2xl">💡</span>
             <p class="text-xs opacity-80 leading-snug">
-              Bạn đã tiêu hết <span class="font-bold text-error">93%</span> ngân sách Mua sắm. Hãy cân nhắc hoãn các khoản mua chưa thực sự cần thiết!
+              Hãy cố gắng ghi nhận mọi khoản chi tiêu dù là nhỏ nhất để có bức tranh tài chính chính xác nhất!
             </p>
           </div>
         </div>

@@ -1,5 +1,33 @@
 vi:
   hello: "Xin chào thế giới"
+  pundit:
+    errors:
+      not_authorized: "Bạn không có quyền thực hiện thao tác này."
+  password_changes:
+    edit:
+      title: "Đổi mật khẩu"
+      subtitle: "Vui lòng điền thông tin bên dưới để thay đổi mật khẩu tài khoản của bạn"
+      errors_title: "Có lỗi xảy ra:"
+      current_password: "Mật khẩu hiện tại"
+      new_password: "Mật khẩu mới"
+      password_hint: "Mật khẩu mới phải có ít nhất 6 ký tự."
+      password_confirmation: "Xác nhận mật khẩu mới"
+      submit_button: "Đổi mật khẩu"
+      cancel_button: "Hủy bỏ"
+    update:
+      success: "Mật khẩu đã được thay đổi thành công."
+    errors:
+      incorrect: "không chính xác"
+  transactions:
+    created: "Thêm khoản chi tiêu thành công."
+    updated: "Cập nhật khoản chi tiêu thành công."
+    destroyed: "Xóa khoản chi tiêu thành công."
+    sort:
+      label: "Sắp xếp theo:"
+      date_desc: "Ngày: Mới nhất"
+      date_asc: "Ngày: Cũ nhất"
+      total_desc: "Số tiền: Giảm dần"
+      total_asc: "Số tiền: Tăng dần"
   activerecord:
     errors:
       messages:
@@ -7,16 +35,33 @@ vi:
         restrict_dependent_destroy:
           has_one: "Không thể xóa bản ghi vì có liên kết phụ thuộc %{record}"
           has_many: "Không thể xóa bản ghi vì có các liên kết phụ thuộc %{record}"
+      models:
+        users:
     models:
       user: "Người dùng"
+      transaction: "Chi tiêu"
     attributes:
       user:
         email_address: "Địa chỉ Email"
         password: "Mật khẩu"
         password_confirmation: "Xác nhận mật khẩu"
+        current_password: "Mật khẩu hiện tại"
+      transaction:
+        purpose: "Mục đích"
+        total: "Số tiền"
+        created_at: "Ngày tạo"
   errors:
     messages:
       blank: "không được để trống"
+      confirmation: "không khớp với %{attribute}"
       taken: "đã được sử dụng"
       invalid: "không hợp lệ"
       too_short: "quá ngắn (tối thiểu %{count} ký tự)"
+      not_a_number: "phải là số"
+      greater_than: "phải lớn hơn %{count}"
+      only_integer: "phải là số nguyên"
+      wrong_credentials: "Sai thông tin đăng nhập, vui lòng thử lại!"
+  helpers:
+    submit:
+      create: "Tạo mới %{model}"
+      update: "Lưu thay đổi %{model}"

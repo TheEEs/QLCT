@@ -1,0 +1,169 @@
+<div class="space-y-8 w-full animate-fade-in">
+  <!-- Header with actions and stats -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-base-100 p-6 rounded-2xl border border-base-300 shadow-sm">
+    <div>
+      <h1 class="text-2xl font-bold tracking-tight">Danh sách chi tiêu</h1>
+      <p class="text-sm opacity-60">
+        Bạn đã ghi nhận <span class="font-bold text-primary"><%= @pagy.count %></span> khoản chi tiêu
+      </p>
+    </div>
+    <div class="flex gap-2">
+      <%= link_to new_transaction_path, class: "btn btn-primary btn-sm md:btn-md gap-2 shadow-sm" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+        Thêm chi tiêu
+      <% end %>
+      <%= link_to "Trang chủ", root_path, class: "btn btn-outline btn-sm md:btn-md" %>
+    </div>
+  </div>
+
+  <!-- Summary Card: Total Spend -->
+  <div class="card bg-base-100 border border-base-300 shadow-sm">
+    <div class="card-body p-6 flex flex-row items-center justify-between">
+      <div class="space-y-1">
+        <span class="text-sm font-semibold opacity-60">Tổng chi tiêu đã ghi nhận</span>
+        <h2 class="text-3xl font-extrabold tracking-tight text-error">
+          <%= number_to_currency(@total_sum, unit: "₫", precision: 0, format: "%n %u") %>
+        </h2>
+      </div>
+      <div class="p-3 bg-error/10 rounded-xl text-error">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transactions Table Card -->
+  <div class="card bg-base-100 border border-base-300 shadow-sm">
+    <%= turbo_frame_tag "transactions_frame" do %>
+      <div class="card-body p-6">
+        <% if @transactions.any? %>
+          <%
+            sort_options = {
+              "created_at_desc" => t("transactions.sort.date_desc"),
+              "created_at_asc" => t("transactions.sort.date_asc"),
+              "total_desc" => t("transactions.sort.total_desc"),
+              "total_asc" => t("transactions.sort.total_asc")
+            }
+            current_sort_key = "#{params[:sort] || 'created_at'}_#{params[:direction] || 'desc'}"
+            current_sort_label = sort_options[current_sort_key] || sort_options["created_at_desc"]
+          %>
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+            <h2 class="text-lg font-bold">Lịch sử chi tiêu</h2>
+            <div class="flex flex-wrap items-center gap-4 self-end lg:self-auto">
+              <!-- Items per page dropdown -->
+              <div class="flex items-center gap-2">
+                <span class="text-xs opacity-60 font-semibold">Hiển thị:</span>
+                <div class="dropdown dropdown-end">
+                  <div tabindex="0" role="button" class="btn btn-outline btn-xs gap-1 py-1 px-2.5 h-auto min-h-0 font-bold transition-all duration-200">
+                    <%= @pagy.limit %> dòng
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <ul tabindex="0" class="dropdown-content menu menu-sm p-2 shadow-xl bg-base-100 rounded-box w-32 border border-base-200 z-[1] mt-1">
+                    <% [5, 10, 20, 50, 100].each do |count| %>
+                      <li>
+                        <%= link_to "#{count} dòng", transactions_path(sort: params[:sort], direction: params[:direction], items: count), class: "#{'active font-bold' if @pagy.limit == count}" %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Sort dropdown -->
+              <div class="flex items-center gap-2">
+                <span class="text-xs opacity-60 font-semibold"><%= t("transactions.sort.label") %></span>
+                <div class="dropdown dropdown-end">
+                  <div tabindex="0" role="button" class="btn btn-outline btn-xs gap-1 py-1 px-2.5 h-auto min-h-0 font-bold transition-all duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                    </svg>
+                    <%= current_sort_label %>
+                  </div>
+                  <ul tabindex="0" class="dropdown-content menu menu-sm p-2 shadow-xl bg-base-100 rounded-box w-52 border border-base-200 z-[1] mt-1">
+                    <li><%= link_to t("transactions.sort.date_desc"), transactions_path(sort: "created_at", direction: "desc", items: params[:items]), class: "#{'active font-bold' if current_sort_key == 'created_at_desc'}" %></li>
+                    <li><%= link_to t("transactions.sort.date_asc"), transactions_path(sort: "created_at", direction: "asc", items: params[:items]), class: "#{'active font-bold' if current_sort_key == 'created_at_asc'}" %></li>
+                    <div class="divider my-1"></div>
+                    <li><%= link_to t("transactions.sort.total_desc"), transactions_path(sort: "total", direction: "desc", items: params[:items]), class: "#{'active font-bold' if current_sort_key == 'total_desc'}" %></li>
+                    <li><%= link_to t("transactions.sort.total_asc"), transactions_path(sort: "total", direction: "asc", items: params[:items]), class: "#{'active font-bold' if current_sort_key == 'total_asc'}" %></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="table table-md w-full">
+              <thead>
+                <tr>
+                  <th>Lý do / Mục đích</th>
+                  <th>Thời gian</th>
+                  <th class="text-right">Số tiền</th>
+                  <th class="text-center">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @transactions.each do |transaction| %>
+                  <tr class="hover:bg-base-200/40 transition-colors duration-150">
+                    <td class="font-bold py-4">
+                      <div class="flex items-center gap-2">
+                        <span class="text-lg">💸</span>
+                        <span><%= transaction.purpose %></span>
+                      </div>
+                    </td>
+                    <td class="text-sm opacity-70">
+                      <%= l(transaction.created_at, format: :long) rescue transaction.created_at.strftime("%H:%M - %d/%m/%Y") %>
+                    </td>
+                    <td class="text-right font-black text-error text-md">
+                      -<%= number_to_currency(transaction.total, unit: "₫", precision: 0, format: "%n %u") %>
+                    </td>
+                    <td class="text-center py-4">
+                      <div class="flex items-center justify-center gap-2">
+                        <%= link_to edit_transaction_path(transaction), data: { turbo_frame: "_top" }, class: "btn btn-ghost btn-xs text-primary font-bold hover:bg-primary/10" do %>
+                          Sửa
+                        <% end %>
+                        <%= button_to transaction_path(transaction), method: :delete, data: { turbo_confirm: "Bạn có chắc chắn muốn xóa không?", turbo_frame: "_top" }, class: "btn btn-ghost btn-xs text-error font-bold hover:bg-error/10" do %>
+                          Xóa
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Footer with showing X to Y of Z status -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-6 border-t border-base-200">
+            <div class="text-sm opacity-70">
+              Hiển thị <span class="font-bold text-base-content"><%= @pagy.from %></span>-<span class="font-bold text-base-content"><%= @pagy.to %></span> trong tổng số <span class="font-bold text-primary"><%= @pagy.count %></span> giao dịch
+            </div>
+
+            <% if @pagy.pages > 1 %>
+              <div class="flex justify-center">
+                <%== @pagy.series_nav %>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="text-center py-12 space-y-4">
+            <div class="text-5xl">🛍️</div>
+            <h3 class="text-lg font-bold">Chưa có giao dịch nào</h3>
+            <p class="text-sm opacity-60 max-w-sm mx-auto">
+              Bắt đầu ghi lại các khoản chi tạo của bạn để theo dõi dòng tiền hiệu quả hơn!
+            </p>
+            <%= link_to new_transaction_path, class: "btn btn-primary btn-sm gap-2" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              Thêm chi tiêu ngay
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
