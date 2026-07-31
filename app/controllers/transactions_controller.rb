@@ -14,7 +14,12 @@ class TransactionsController < ApplicationController
     items_per_page = allowed_items.include?(params[:items].to_i) ? params[:items].to_i : (Pagy::DEFAULT[:items] || 10)
 
     transactions_scope = policy_scope(Current.user.transactions)
-    @total_sum = transactions_scope.sum(:total)
+    
+    # Calculate separate totals for income, expense, and balance
+    @total_income = transactions_scope.where(income: true).sum(:total)
+    @total_expense = transactions_scope.where(income: false).sum(:total)
+    @balance = @total_income - @total_expense
+
     @pagy, @transactions = pagy(
       transactions_scope.order(sort_column => sort_direction),
       limit: items_per_page
@@ -64,7 +69,7 @@ class TransactionsController < ApplicationController
   end
 
   def transaction_params
-    params.require(:transaction).permit(:purpose, :total)
+    params.require(:transaction).permit(:purpose, :total, :income)
   end
 
 

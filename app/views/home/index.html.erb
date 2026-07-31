@@ -31,7 +31,7 @@
             </div>
           </div>
           <% 
-            estimated_balance = 50_000_000 - @total_expenses
+            estimated_balance = 50_000_000 + @total_income - @total_expenses
           %>
           <p class="text-3xl font-extrabold tracking-tight">
             <%= number_to_currency(estimated_balance, unit: "₫", precision: 0, format: "%n %u") %>
@@ -106,15 +106,20 @@
                     <tr class="hover:bg-base-200/40">
                       <td>
                         <div class="flex items-center gap-2 py-1">
-                          <span class="text-lg">🍔</span>
-                          <span class="font-bold text-sm"><%= transaction.purpose %></span>
+                          <span class="text-lg"><%= transaction.income? ? "💰" : "🍔" %></span>
+                          <span class="font-bold text-sm">
+                            <%= transaction.purpose %>
+                            <% if transaction.income? %>
+                              <span class="badge badge-success badge-xs font-bold text-[10px] text-success-content ml-1">Thu nhập</span>
+                            <% end %>
+                          </span>
                         </div>
                       </td>
                       <td class="text-xs opacity-60">
                         <%= l(transaction.created_at, format: :short) rescue transaction.created_at.strftime("%d/%m/%Y") %>
                       </td>
-                      <td class="text-right font-bold text-error">
-                        -<%= number_to_currency(transaction.total, unit: "₫", precision: 0, format: "%n %u") %>
+                      <td class="text-right font-bold <%= transaction.income? ? 'text-success' : 'text-error' %>">
+                        <%= transaction.income? ? "+" : "-" %><%= number_to_currency(transaction.total, unit: "₫", precision: 0, format: "%n %u") %>
                       </td>
                     </tr>
                   <% end %>
@@ -124,8 +129,8 @@
           <% else %>
             <div class="text-center py-8 space-y-3">
               <div class="text-4xl">🛍️</div>
-              <p class="text-sm opacity-60">Bạn chưa ghi chép chi tiêu nào.</p>
-              <%= link_to "Ghi nhận chi tiêu đầu tiên", new_transaction_path, class: "btn btn-primary btn-xs" %>
+              <p class="text-sm opacity-60">Bạn chưa ghi nhận giao dịch nào.</p>
+              <%= link_to "Ghi nhận giao dịch đầu tiên", new_transaction_path, class: "btn btn-primary btn-xs" %>
             </div>
           <% end %>
         </div>

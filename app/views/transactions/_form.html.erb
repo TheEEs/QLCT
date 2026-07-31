@@ -16,6 +16,20 @@
   <% end %>
 
   <div class="form-control">
+    <span class="label-text font-semibold text-xs mb-1.5 opacity-70">Phân loại giao dịch</span>
+    <div class="flex gap-4 p-2 bg-base-200/50 rounded-xl border border-base-200">
+      <label class="label cursor-pointer flex-1 justify-center gap-2 bg-base-100 rounded-lg py-2 border border-base-300 hover:border-error/30 transition-all duration-200 shadow-sm">
+        <%= form.radio_button :income, false, class: "radio radio-error radio-sm" %>
+        <span class="label-text font-bold text-xs opacity-80 flex items-center gap-1">💸 Chi tiêu</span>
+      </label>
+      <label class="label cursor-pointer flex-1 justify-center gap-2 bg-base-100 rounded-lg py-2 border border-base-300 hover:border-success/30 transition-all duration-200 shadow-sm">
+        <%= form.radio_button :income, true, class: "radio radio-success radio-sm" %>
+        <span class="label-text font-bold text-xs opacity-80 flex items-center gap-1">💰 Thu nhập</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="form-control">
     <%= form.label :purpose, class: "label-text font-semibold text-xs mb-1.5 opacity-70" %>
     <%= form.text_field :purpose, autofocus: true, placeholder: "Ví dụ: Ăn trưa, Đổ xăng, Mua sắm...", class: "input input-bordered w-full focus:input-primary transition-all duration-200" %>
   </div>

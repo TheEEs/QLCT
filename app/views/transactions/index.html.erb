@@ -4,7 +4,7 @@
     <div>
       <h1 class="text-2xl font-bold tracking-tight">Danh sách chi tiêu</h1>
       <p class="text-sm opacity-60">
-        Bạn đã ghi nhận <span class="font-bold text-primary"><%= @pagy.count %></span> khoản chi tiêu
+        Bạn đã ghi nhận <span class="font-bold text-primary"><%= @pagy.count %></span> giao dịch
       </p>
     </div>
     <div class="flex gap-2">
@@ -12,25 +12,62 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
-        Thêm chi tiêu
+        Thêm chi tiêu / thu nhập
       <% end %>
       <%= link_to "Trang chủ", root_path, class: "btn btn-outline btn-sm md:btn-md" %>
     </div>
   </div>
 
-  <!-- Summary Card: Total Spend -->
-  <div class="card bg-base-100 border border-base-300 shadow-sm">
-    <div class="card-body p-6 flex flex-row items-center justify-between">
-      <div class="space-y-1">
-        <span class="text-sm font-semibold opacity-60">Tổng chi tiêu đã ghi nhận</span>
-        <h2 class="text-3xl font-extrabold tracking-tight text-error">
-          <%= number_to_currency(@total_sum, unit: "₫", precision: 0, format: "%n %u") %>
-        </h2>
+  <!-- Summary Cards Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Income Card -->
+    <div class="card bg-base-100 border border-base-300 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <div class="card-body p-6 flex flex-row items-center justify-between">
+        <div class="space-y-1">
+          <span class="text-sm font-semibold opacity-60">Tổng thu nhập</span>
+          <h2 class="text-2xl font-extrabold tracking-tight text-success">
+            <%= number_to_currency(@total_income, unit: "₫", precision: 0, format: "%n %u") %>
+          </h2>
+        </div>
+        <div class="p-3 bg-success/10 rounded-xl text-success">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        </div>
       </div>
-      <div class="p-3 bg-error/10 rounded-xl text-error">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" />
-        </svg>
+    </div>
+
+    <!-- Expense Card -->
+    <div class="card bg-base-100 border border-base-300 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <div class="card-body p-6 flex flex-row items-center justify-between">
+        <div class="space-y-1">
+          <span class="text-sm font-semibold opacity-60">Tổng chi tiêu</span>
+          <h2 class="text-2xl font-extrabold tracking-tight text-error">
+            <%= number_to_currency(@total_expense, unit: "₫", precision: 0, format: "%n %u") %>
+          </h2>
+        </div>
+        <div class="p-3 bg-error/10 rounded-xl text-error">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Balance Card -->
+    <div class="card bg-base-100 border border-base-300 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <div class="card-body p-6 flex flex-row items-center justify-between">
+        <div class="space-y-1">
+          <span class="text-sm font-semibold opacity-60">Số dư khả dụng</span>
+          <h2 class="text-2xl font-extrabold tracking-tight <%= @balance >= 0 ? 'text-primary' : 'text-warning' %>">
+            <%= @balance >= 0 ? "+" : "" %><%= number_to_currency(@balance, unit: "₫", precision: 0, format: "%n %u") %>
+          </h2>
+        </div>
+        <div class="p-3 <%= @balance >= 0 ? 'bg-primary/10 text-primary' : 'bg-warning/10 text-warning' %> rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
       </div>
     </div>
   </div>
@@ -110,15 +147,18 @@
                   <tr class="hover:bg-base-200/40 transition-colors duration-150">
                     <td class="font-bold py-4">
                       <div class="flex items-center gap-2">
-                        <span class="text-lg">💸</span>
+                        <span class="text-lg"><%= transaction.income? ? "💰" : "💸" %></span>
                         <span><%= transaction.purpose %></span>
+                        <% if transaction.income? %>
+                          <span class="badge badge-success badge-xs font-bold text-[10px] text-success-content px-1.5 py-0.5 h-auto min-h-0">Thu nhập</span>
+                        <% end %>
                       </div>
                     </td>
                     <td class="text-sm opacity-70">
                       <%= l(transaction.created_at, format: :long) rescue transaction.created_at.strftime("%H:%M - %d/%m/%Y") %>
                     </td>
-                    <td class="text-right font-black text-error text-md">
-                      -<%= number_to_currency(transaction.total, unit: "₫", precision: 0, format: "%n %u") %>
+                    <td class="text-right font-black text-md <%= transaction.income? ? 'text-success' : 'text-error' %>">
+                      <%= transaction.income? ? "+" : "-" %><%= number_to_currency(transaction.total, unit: "₫", precision: 0, format: "%n %u") %>
                     </td>
                     <td class="text-center py-4">
                       <div class="flex items-center justify-center gap-2">
