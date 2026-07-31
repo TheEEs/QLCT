@@ -3,8 +3,8 @@
     <div class="card-body gap-6 p-6 sm:p-10">
       <div class="text-center space-y-2">
         <div class="text-4xl">✏️</div>
-        <h1 class="text-2xl font-black tracking-tight">Chỉnh sửa chi tiêu</h1>
-        <p class="text-sm opacity-60">Cập nhật thông tin khoản chi tiêu của bạn</p>
+        <h1 class="text-2xl font-black tracking-tight"><%= t("transactions.edit.title") %></h1>
+        <p class="text-sm opacity-60"><%= t("transactions.edit.subtitle") %></p>
       </div>
 
       <%= render "form", transaction: @transaction %>

@@ -3,23 +3,23 @@
     <div class="card-body gap-6 p-6 sm:p-10">
       <div class="text-center space-y-2">
         <div class="text-4xl">🛡️</div>
-        <h1 class="text-2xl font-black tracking-tight">Đặt mật khẩu mới</h1>
-        <p class="text-sm opacity-60">Tạo một mật khẩu mới an toàn để bảo vệ tài khoản của bạn.</p>
+        <h1 class="text-2xl font-black tracking-tight"><%= t("passwords.edit.title") %></h1>
+        <p class="text-sm opacity-60"><%= t("passwords.edit.subtitle") %></p>
       </div>
 
       <%= form_with url: password_path(params[:token]), method: :put, class: "space-y-4" do |form| %>
         <div class="form-control">
-          <%= form.label :password, "Mật khẩu mới", class: "label-text font-semibold text-xs mb-1.5 opacity-70" %>
-          <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Nhập mật khẩu mới", maxlength: 72, class: "input input-bordered w-full focus:input-primary transition-all duration-200" %>
+          <%= form.label :password, t("passwords.edit.password_label"), class: "label-text font-semibold text-xs mb-1.5 opacity-70" %>
+          <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: t("passwords.edit.password_placeholder"), maxlength: 72, class: "input input-bordered w-full focus:input-primary transition-all duration-200" %>
         </div>
 
         <div class="form-control">
-          <%= form.label :password_confirmation, "Xác nhận mật khẩu mới", class: "label-text font-semibold text-xs mb-1.5 opacity-70" %>
-          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Nhập lại mật khẩu mới", maxlength: 72, class: "input input-bordered w-full focus:input-primary transition-all duration-200" %>
+          <%= form.label :password_confirmation, t("passwords.edit.confirmation_label"), class: "label-text font-semibold text-xs mb-1.5 opacity-70" %>
+          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: t("passwords.edit.confirmation_placeholder"), maxlength: 72, class: "input input-bordered w-full focus:input-primary transition-all duration-200" %>
         </div>
 
         <div class="form-control pt-2">
-          <%= form.submit "Lưu mật khẩu", class: "btn btn-primary w-full shadow-md shadow-primary/20 font-bold" %>
+          <%= form.submit t("passwords.edit.submit_button"), class: "btn btn-primary w-full shadow-md shadow-primary/20 font-bold" %>
         </div>
       <% end %>
     </div>

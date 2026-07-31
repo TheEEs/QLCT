@@ -3,17 +3,17 @@
     <!-- Header Greeting -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-base-100 p-6 rounded-2xl border border-base-300 shadow-sm">
       <div>
-        <h1 class="text-2xl font-bold tracking-tight">Chào mừng quay trở lại!</h1>
-        <p class="text-sm opacity-60">Quản lý tài chính cho <span class="font-semibold text-primary"><%= Current.session.user.email_address %></span></p>
+        <h1 class="text-2xl font-bold tracking-tight"><%= t("home.index.greeting") %></h1>
+        <p class="text-sm opacity-60"><%= t("home.index.managing_for") %> <span class="font-semibold text-primary"><%= Current.session.user.email_address %></span></p>
       </div>
       <div class="flex gap-2">
         <%= link_to new_transaction_path, class: "btn btn-primary btn-sm md:btn-md gap-2 shadow-sm" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
-          Thêm chi tiêu
+          <%= t("home.index.add_transaction") %>
         <% end %>
-        <%= link_to "Xem tất cả", transactions_path, class: "btn btn-outline btn-sm md:btn-md" %>
+        <%= link_to t("home.index.view_all"), transactions_path, class: "btn btn-outline btn-sm md:btn-md" %>
       </div>
     </div>
 
@@ -23,7 +23,7 @@
       <div class="card bg-base-100 border border-base-300 shadow-sm hover:border-success/30 transition-all duration-200">
         <div class="card-body p-5">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-semibold opacity-60">Số dư khả dụng (Ước tính)</span>
+            <span class="text-sm font-semibold opacity-60"><%= t("home.index.balance_title") %></span>
             <div class="p-2 bg-success/10 rounded-xl text-success">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -37,7 +37,7 @@
             <%= number_to_currency(estimated_balance, unit: "₫", precision: 0, format: "%n %u") %>
           </p>
           <div class="flex items-center gap-1 mt-2 text-xs opacity-60">
-            <span>Dựa trên hạn mức chi tiêu ban đầu</span>
+            <span><%= t("home.index.balance_hint") %></span>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@
       <div class="card bg-base-100 border border-base-300 shadow-sm hover:border-primary/30 transition-all duration-200">
         <div class="card-body p-5">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-semibold opacity-60">Hạn mức tháng</span>
+            <span class="text-sm font-semibold opacity-60"><%= t("home.index.limit_title") %></span>
             <div class="p-2 bg-primary/10 rounded-xl text-primary">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
@@ -55,7 +55,7 @@
           </div>
           <p class="text-3xl font-extrabold tracking-tight">50.000.000 ₫</p>
           <div class="flex items-center gap-1 mt-2 text-xs opacity-60">
-            <span>Hạn mức mặc định ban đầu</span>
+            <span><%= t("home.index.limit_hint") %></span>
           </div>
         </div>
       </div>
@@ -64,7 +64,7 @@
       <div class="card bg-base-100 border border-base-300 shadow-sm hover:border-error/30 transition-all duration-200">
         <div class="card-body p-5">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-semibold opacity-60">Tổng chi tiêu đã ghi nhận</span>
+            <span class="text-sm font-semibold opacity-60"><%= t("home.index.expenses_title") %></span>
             <div class="p-2 bg-error/10 rounded-xl text-error">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" />
@@ -75,7 +75,7 @@
             <%= number_to_currency(@total_expenses, unit: "₫", precision: 0, format: "%n %u") %>
           </p>
           <div class="flex items-center gap-1 mt-2 text-xs opacity-60">
-            <span>Cập nhật theo thời gian thực</span>
+            <span><%= t("home.index.expenses_hint") %></span>
           </div>
         </div>
       </div>
@@ -87,8 +87,8 @@
       <div class="lg:col-span-2 card bg-base-100 border border-base-300 shadow-sm">
         <div class="card-body p-6">
           <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-bold">Giao dịch gần đây</h2>
-            <%= link_to "Xem tất cả", transactions_path, class: "btn btn-ghost btn-xs text-primary font-semibold" %>
+            <h2 class="text-lg font-bold"><%= t("home.index.recent_transactions") %></h2>
+            <%= link_to t("home.index.view_all"), transactions_path, class: "btn btn-ghost btn-xs text-primary font-semibold" %>
           </div>
           
           <% if @transactions.any? %>
@@ -96,9 +96,9 @@
               <table class="table table-sm w-full">
                 <thead>
                   <tr>
-                    <th>Mô tả</th>
-                    <th>Thời gian</th>
-                    <th class="text-right">Số tiền</th>
+                    <th><%= t("home.index.description") %></th>
+                    <th><%= t("home.index.time") %></th>
+                    <th class="text-right"><%= t("home.index.amount") %></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -110,7 +110,7 @@
                           <span class="font-bold text-sm">
                             <%= transaction.purpose %>
                             <% if transaction.income? %>
-                              <span class="badge badge-success badge-xs font-bold text-[10px] text-success-content ml-1">Thu nhập</span>
+                              <span class="badge badge-success badge-xs font-bold text-[10px] text-success-content ml-1"><%= t("transactions.index.table.income_badge") %></span>
                             <% end %>
                           </span>
                         </div>
@@ -129,8 +129,8 @@
           <% else %>
             <div class="text-center py-8 space-y-3">
               <div class="text-4xl">🛍️</div>
-              <p class="text-sm opacity-60">Bạn chưa ghi nhận giao dịch nào.</p>
-              <%= link_to "Ghi nhận giao dịch đầu tiên", new_transaction_path, class: "btn btn-primary btn-xs" %>
+              <p class="text-sm opacity-60"><%= t("home.index.no_transactions") %></p>
+              <%= link_to t("home.index.record_first"), new_transaction_path, class: "btn btn-primary btn-xs" %>
             </div>
           <% end %>
         </div>
@@ -139,12 +139,12 @@
       <!-- Budget & Categories (Right) -->
       <div class="card bg-base-100 border border-base-300 shadow-sm">
         <div class="card-body p-6">
-          <h2 class="text-lg font-bold mb-4">Ngân sách tháng</h2>
+          <h2 class="text-lg font-bold mb-4"><%= t("home.index.monthly_budget") %></h2>
           <div class="space-y-4">
             <!-- Item 1: Food -->
             <div>
               <div class="flex justify-between text-xs mb-1">
-                <span class="font-semibold">🍔 Ăn uống & Ẩm thực</span>
+                <span class="font-semibold"><%= t("home.index.budget_items.food") %></span>
                 <span class="opacity-60 font-semibold"><%= number_to_currency([@total_expenses, 5_000_000].min, unit: "₫", precision: 0, format: "%n %u") %> / 5.000.000 ₫</span>
               </div>
               <% food_percent = [((@total_expenses.to_f / 5_000_000) * 100).round, 100].min %>
@@ -153,7 +153,7 @@
             <!-- Item 2: Transport -->
             <div>
               <div class="flex justify-between text-xs mb-1">
-                <span class="font-semibold">🚗 Di chuyển</span>
+                <span class="font-semibold"><%= t("home.index.budget_items.transport") %></span>
                 <span class="opacity-60 font-semibold">0 / 2.000.000 ₫</span>
               </div>
               <progress class="progress progress-info w-full" value="0" max="100"></progress>
@@ -161,7 +161,7 @@
             <!-- Item 3: Shopping -->
             <div>
               <div class="flex justify-between text-xs mb-1">
-                <span class="font-semibold">🛍️ Mua sắm</span>
+                <span class="font-semibold"><%= t("home.index.budget_items.shopping") %></span>
                 <span class="opacity-60 font-semibold">0 / 3.000.000 ₫</span>
               </div>
               <progress class="progress progress-error w-full" value="0" max="100"></progress>
@@ -171,7 +171,7 @@
           <div class="bg-base-200 p-3 rounded-xl flex items-center gap-3">
             <span class="text-2xl">💡</span>
             <p class="text-xs opacity-80 leading-snug">
-              Hãy cố gắng ghi nhận mọi khoản chi tiêu dù là nhỏ nhất để có bức tranh tài chính chính xác nhất!
+              <%= t("home.index.tip") %>
             </p>
           </div>
         </div>
@@ -185,19 +185,18 @@
       <div class="hero-content flex-col lg:flex-row gap-12 p-0 text-center lg:text-left">
         <div class="flex-1 space-y-6">
           <div class="badge badge-outline badge-primary font-bold tracking-wider px-3 py-1 text-xs uppercase">
-            Giới thiệu Ứng dụng QLCT
+            <%= t("home.index.intro_badge") %>
           </div>
           <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-none">
-            Quản lý Chi tiêu <br class="hidden md:inline" />
-            <span class="bg-gradient-to-r from-primary via-purple-500 to-secondary bg-clip-text text-transparent">Thông minh</span> <br />
-            Cực kỳ Đơn giản.
+            <%= t("home.index.intro_title") %> <br class="hidden md:inline" />
+            <span class="bg-gradient-to-r from-primary via-purple-500 to-secondary bg-clip-text text-transparent"><%= raw t("home.index.intro_subtitle") %></span>
           </h1>
           <p class="text-md opacity-75 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-            Kiểm soát hoàn toàn tài chính cá nhân của bạn. Theo dõi chi tiêu, thiết lập ngân sách thực tế và gia tăng tích lũy với giao diện trực quan, tinh gọn và tuyệt đẹp của QLCT.
+            <%= t("home.index.intro_description") %>
           </p>
           <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-3">
-            <%= link_to "Bắt đầu ngay", new_registration_path, class: "btn btn-primary shadow-lg shadow-primary/20 gap-2 font-bold px-6" %>
-            <a href="#learn-more" class="btn btn-ghost border-base-300 hover:bg-base-200/50">Tìm hiểu thêm</a>
+            <%= link_to t("home.index.get_started"), new_registration_path, class: "btn btn-primary shadow-lg shadow-primary/20 gap-2 font-bold px-6" %>
+            <a href="#learn-more" class="btn btn-ghost border-base-300 hover:bg-base-200/50"><%= t("home.index.learn_more") %></a>
           </div>
         </div>
 
@@ -210,8 +209,8 @@
                 <div class="flex items-center gap-2">
                   <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-bold">Q</div>
                   <div>
-                    <h4 class="font-bold text-xs">Chi tiêu của tôi</h4>
-                    <p class="text-[10px] opacity-60">Vừa cập nhật xong</p>
+                    <h4 class="font-bold text-xs"><%= t("home.index.my_expenses") %></h4>
+                    <p class="text-[10px] opacity-60"><%= t("home.index.just_updated") %></p>
                   </div>
                 </div>
                 <span class="badge badge-success badge-sm font-bold text-[10px]">+14.2%</span>
@@ -219,20 +218,20 @@
 
               <!-- Big Balance representation -->
               <div class="space-y-1">
-                <p class="text-xs opacity-60 font-semibold">Số dư khả dụng</p>
+                <p class="text-xs opacity-60 font-semibold"><%= t("transactions.index.balance_title") %></p>
                 <p class="text-3xl font-black tracking-tight">4.890.000 ₫</p>
               </div>
 
               <!-- Mini Bar chart mockups -->
               <div class="space-y-2 mt-2">
                 <div class="flex justify-between text-[10px] font-semibold">
-                  <span>🏠 Nhà ở & Hóa đơn</span>
+                  <span>🏠 <%= t("home.index.budget_items.food") %></span>
                   <span class="opacity-60">950.000 / 1.200.000 ₫</span>
                 </div>
                 <progress class="progress progress-primary h-1.5 w-full" value="79" max="100"></progress>
 
                 <div class="flex justify-between text-[10px] font-semibold mt-1">
-                  <span>🍔 Ăn uống & Đi chợ</span>
+                  <span>🍔 <%= t("home.index.budget_items.food") %></span>
                   <span class="opacity-60">420.000 / 600.000 ₫</span>
                 </div>
                 <progress class="progress progress-warning h-1.5 w-full" value="70" max="100"></progress>
@@ -249,8 +248,8 @@
     <!-- Features Grid -->
     <div id="learn-more" class="pt-12 border-t border-base-300/60">
       <div class="text-center max-w-lg mx-auto mb-10 space-y-2">
-        <h3 class="text-2xl font-bold tracking-tight">Tất cả những gì bạn cần ở một nơi</h3>
-        <p class="text-sm opacity-60">Các công cụ đơn giản nhưng mạnh mẽ giúp bạn có được sự minh bạch về tài chính.</p>
+        <h3 class="text-2xl font-bold tracking-tight"><%= t("home.index.all_you_need") %></h3>
+        <p class="text-sm opacity-60"><%= t("home.index.all_you_need_sub") %></p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -262,8 +261,8 @@
             </svg>
           </div>
           <div class="space-y-1">
-            <h4 class="font-bold text-sm">Theo dõi thời gian thực</h4>
-            <p class="text-xs opacity-75 leading-relaxed">Ghi chép nhanh các khoản chi khi vừa mua sắm. Gắn nhãn phân loại tự động cực tiện lợi.</p>
+            <h4 class="font-bold text-sm"><%= t("home.index.feature_1_title") %></h4>
+            <p class="text-xs opacity-75 leading-relaxed"><%= t("home.index.feature_1_desc") %></p>
           </div>
         </div>
 
@@ -275,8 +274,8 @@
             </svg>
           </div>
           <div class="space-y-1">
-            <h4 class="font-bold text-sm">Phân tích trực quan</h4>
-            <p class="text-xs opacity-75 leading-relaxed">Thanh tiến độ tinh tế và dữ liệu sinh động minh họa rõ ràng thói quen dùng tiền hàng tháng.</p>
+            <h4 class="font-bold text-sm"><%= t("home.index.feature_2_title") %></h4>
+            <p class="text-xs opacity-75 leading-relaxed"><%= t("home.index.feature_2_desc") %></p>
           </div>
         </div>
 
@@ -288,8 +287,8 @@
             </svg>
           </div>
           <div class="space-y-1">
-            <h4 class="font-bold text-sm">Riêng tư & Bảo mật</h4>
-            <p class="text-xs opacity-75 leading-relaxed">Được bảo mật hoàn chỉnh với cơ chế mã hóa mật khẩu, mã hóa TLS và lưu cookie phiên an toàn.</p>
+            <h4 class="font-bold text-sm"><%= t("home.index.feature_3_title") %></h4>
+            <p class="text-xs opacity-75 leading-relaxed"><%= t("home.index.feature_3_desc") %></p>
           </div>
         </div>
       </div>

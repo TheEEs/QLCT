@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="bg-base-200 min-h-screen flex flex-col">
   <head>
-    <title><%= content_for(:title) || "QLCT - Quản lý chi tiêu" %></title>
+    <title><%= content_for(:title) || t("layouts.application.title") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="QLCT">
+    <meta name="application-name" content="<%= t("layouts.application.brand") %>">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -17,6 +17,14 @@
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <script>
+      // Apply the theme stored in localStorage immediately to avoid light-flash on load
+      const theme = localStorage.getItem("theme");
+      if (theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+      }
+    </script>
   </head>
 
   <body class="bg-base-200 text-base-content font-sans antialiased min-h-screen flex flex-col">
@@ -26,11 +34,49 @@
         <div class="flex-1">
           <%= link_to root_path, class: "btn btn-ghost text-xl font-bold gap-2 normal-case tracking-tight hover:bg-base-200/50" do %>
             <span class="text-2xl">💸</span>
-            <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-black">QLCT</span>
+            <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-black"><%= t("layouts.application.brand") %></span>
           <% end %>
         </div>
 
-        <div class="flex-none gap-4">
+        <div class="flex-none flex items-center gap-2 md:gap-4">
+          <!-- Language Switcher Dropdown -->
+          <div class="dropdown dropdown-end" data-controller="locale" data-locale-current-value="<%= I18n.locale %>">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-sm gap-1.5 font-bold hover:bg-base-200/50">
+              <% if I18n.locale == :vi %>
+                <span>🇻🇳</span> <span class="hidden sm:inline">Tiếng Việt</span>
+              <% else %>
+                <span>🇬🇧</span> <span class="hidden sm:inline">English</span>
+              <% end %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            <ul tabindex="0" class="dropdown-content menu menu-sm p-2 shadow-xl bg-base-100 rounded-box w-36 border border-base-200 z-[51] mt-1">
+              <li>
+                <a href="#" data-locale="vi" data-action="click->locale#change" class="flex items-center gap-2 <%= 'active font-bold' if I18n.locale == :vi %>">
+                  <span>🇻🇳</span> Tiếng Việt
+                </a>
+              </li>
+              <li>
+                <a href="#" data-locale="en" data-action="click->locale#change" class="flex items-center gap-2 <%= 'active font-bold' if I18n.locale == :en %>">
+                  <span>🇬🇧</span> English
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Theme Toggle Switch -->
+          <label class="btn btn-ghost btn-circle btn-sm swap swap-rotate hover:bg-base-200/50">
+            <!-- this hidden checkbox controls the state -->
+            <input type="checkbox" data-toggle-theme="dark,light" data-act-class="ACTIVE_CLASS" />
+            
+            <!-- sun icon (visible when dark theme is active) -->
+            <svg class="swap-on fill-current w-4.5 h-4.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,17.66l-.71.71a1,1,0,0,0,1.41,1.41l.71-.71A1,1,0,0,0,18.36,17ZM12,6a6,6,0,1,0,6,6A6,6,0,0,0,12,6Z"/></svg>
+            
+            <!-- moon icon (visible when light theme is active) -->
+            <svg class="swap-off fill-current w-4.5 h-4.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.11,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05A1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.69Z"/></svg>
+          </label>
+
           <% if authenticated? %>
             <div class="dropdown dropdown-end">
               <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
@@ -39,7 +85,7 @@
                 </div>
               </div>
               <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box border border-base-200">
-                <li class="menu-title px-4 py-2 text-xs font-semibold opacity-60"><%= Current.session.user.email_address %></li>
+                <li class="menu-title px-4 py-2 text-xs text-content font-semibold"><%= Current.session.user.email_address %></li>
                 <div class="divider my-1"></div>
                 <li>
                   <%= link_to edit_password_change_path, class: "flex items-center gap-2 text-base-content hover:bg-base-200" do %>
@@ -54,13 +100,13 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
-                    Đăng xuất
+                    <%= t("common.logout") %>
                   <% end %>
                 </li>
               </ul>
             </div>
           <% else %>
-            <%= link_to "Đăng nhập", new_session_path, class: "btn btn-primary btn-sm px-4" %>
+            <%= link_to t("common.login"), new_session_path, class: "btn btn-primary btn-sm px-4" %>
           <% end %>
         </div>
       </div>
@@ -97,9 +143,9 @@
     <footer class="footer footer-center p-6 bg-base-100 text-base-content border-t border-base-300">
       <aside>
         <p class="font-medium text-sm">
-          💸 <span class="font-bold">QLCT</span> - Quản lý Chi tiêu Đơn giản & Tinh tế
+          💸 <span class="font-bold"><%= t("layouts.application.brand") %></span> - <%= t("layouts.application.tagline") %>
         </p>
-        <p class="text-xs opacity-60">Bản quyền © <%= Time.current.year %> - Bảo lưu mọi quyền</p>
+        <p class="text-xs opacity-60"><%= t("layouts.application.copyright", year: Time.current.year) %></p>
       </aside>
     </footer>
   </body>

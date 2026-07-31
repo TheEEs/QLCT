@@ -2,9 +2,9 @@
   <!-- Header with actions and stats -->
   <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-base-100 p-6 rounded-2xl border border-base-300 shadow-sm">
     <div>
-      <h1 class="text-2xl font-bold tracking-tight">Danh sách chi tiêu</h1>
+      <h1 class="text-2xl font-bold tracking-tight"><%= t("transactions.index.title") %></h1>
       <p class="text-sm opacity-60">
-        Bạn đã ghi nhận <span class="font-bold text-primary"><%= @pagy.count %></span> giao dịch
+        <%= raw t("transactions.index.greeting", count: "<span class=\"font-bold text-primary\">#{@pagy.count}</span>") %>
       </p>
     </div>
     <div class="flex gap-2">
@@ -12,9 +12,9 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
-        Thêm chi tiêu / thu nhập
+        <%= t("transactions.index.add_new") %>
       <% end %>
-      <%= link_to "Trang chủ", root_path, class: "btn btn-outline btn-sm md:btn-md" %>
+      <%= link_to t("transactions.index.home"), root_path, class: "btn btn-outline btn-sm md:btn-md" %>
     </div>
   </div>
 
@@ -24,7 +24,7 @@
     <div class="card bg-base-100 border border-base-300 shadow-sm hover:shadow-md transition-shadow duration-200">
       <div class="card-body p-6 flex flex-row items-center justify-between">
         <div class="space-y-1">
-          <span class="text-sm font-semibold opacity-60">Tổng thu nhập</span>
+          <span class="text-sm font-semibold opacity-60"><%= t("transactions.index.income_title") %></span>
           <h2 class="text-2xl font-extrabold tracking-tight text-success">
             <%= number_to_currency(@total_income, unit: "₫", precision: 0, format: "%n %u") %>
           </h2>
@@ -41,7 +41,7 @@
     <div class="card bg-base-100 border border-base-300 shadow-sm hover:shadow-md transition-shadow duration-200">
       <div class="card-body p-6 flex flex-row items-center justify-between">
         <div class="space-y-1">
-          <span class="text-sm font-semibold opacity-60">Tổng chi tiêu</span>
+          <span class="text-sm font-semibold opacity-60"><%= t("transactions.index.expense_title") %></span>
           <h2 class="text-2xl font-extrabold tracking-tight text-error">
             <%= number_to_currency(@total_expense, unit: "₫", precision: 0, format: "%n %u") %>
           </h2>
@@ -58,7 +58,7 @@
     <div class="card bg-base-100 border border-base-300 shadow-sm hover:shadow-md transition-shadow duration-200">
       <div class="card-body p-6 flex flex-row items-center justify-between">
         <div class="space-y-1">
-          <span class="text-sm font-semibold opacity-60">Số dư khả dụng</span>
+          <span class="text-sm font-semibold opacity-60"><%= t("transactions.index.balance_title") %></span>
           <h2 class="text-2xl font-extrabold tracking-tight <%= @balance >= 0 ? 'text-primary' : 'text-warning' %>">
             <%= @balance >= 0 ? "+" : "" %><%= number_to_currency(@balance, unit: "₫", precision: 0, format: "%n %u") %>
           </h2>
@@ -88,14 +88,14 @@
             current_sort_label = sort_options[current_sort_key] || sort_options["created_at_desc"]
           %>
           <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
-            <h2 class="text-lg font-bold">Lịch sử chi tiêu</h2>
+            <h2 class="text-lg font-bold"><%= t("transactions.index.history_title") %></h2>
             <div class="flex flex-wrap items-center gap-4 self-end lg:self-auto">
               <!-- Items per page dropdown -->
               <div class="flex items-center gap-2">
-                <span class="text-xs opacity-60 font-semibold">Hiển thị:</span>
+                <span class="text-xs opacity-60 font-semibold"><%= t("transactions.index.show_limit") %></span>
                 <div class="dropdown dropdown-end">
                   <div tabindex="0" role="button" class="btn btn-outline btn-xs gap-1 py-1 px-2.5 h-auto min-h-0 font-bold transition-all duration-200">
-                    <%= @pagy.limit %> dòng
+                    <%= t("transactions.index.rows", count: @pagy.limit) %>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
@@ -103,7 +103,7 @@
                   <ul tabindex="0" class="dropdown-content menu menu-sm p-2 shadow-xl bg-base-100 rounded-box w-32 border border-base-200 z-[1] mt-1">
                     <% [5, 10, 20, 50, 100].each do |count| %>
                       <li>
-                        <%= link_to "#{count} dòng", transactions_path(sort: params[:sort], direction: params[:direction], items: count), class: "#{'active font-bold' if @pagy.limit == count}" %>
+                        <%= link_to t("transactions.index.rows", count: count), transactions_path(sort: params[:sort], direction: params[:direction], items: count), class: "#{'active font-bold' if @pagy.limit == count}" %>
                       </li>
                     <% end %>
                   </ul>
@@ -136,10 +136,10 @@
             <table class="table table-md w-full">
               <thead>
                 <tr>
-                  <th>Lý do / Mục đích</th>
-                  <th>Thời gian</th>
-                  <th class="text-right">Số tiền</th>
-                  <th class="text-center">Thao tác</th>
+                  <th><%= t("transactions.index.table.purpose") %></th>
+                  <th><%= t("transactions.index.table.time") %></th>
+                  <th class="text-right"><%= t("transactions.index.table.amount") %></th>
+                  <th class="text-center"><%= t("transactions.index.table.actions") %></th>
                 </tr>
               </thead>
               <tbody>
@@ -150,7 +150,7 @@
                         <span class="text-lg"><%= transaction.income? ? "💰" : "💸" %></span>
                         <span><%= transaction.purpose %></span>
                         <% if transaction.income? %>
-                          <span class="badge badge-success badge-xs font-bold text-[10px] text-success-content px-1.5 py-0.5 h-auto min-h-0">Thu nhập</span>
+                          <span class="badge badge-success badge-xs font-bold text-[10px] text-success-content px-1.5 py-0.5 h-auto min-h-0"><%= t("transactions.index.table.income_badge") %></span>
                         <% end %>
                       </div>
                     </td>
@@ -163,10 +163,10 @@
                     <td class="text-center py-4">
                       <div class="flex items-center justify-center gap-2">
                         <%= link_to edit_transaction_path(transaction), data: { turbo_frame: "_top" }, class: "btn btn-ghost btn-xs text-primary font-bold hover:bg-primary/10" do %>
-                          Sửa
+                          <%= t("transactions.index.table.edit") %>
                         <% end %>
-                        <%= button_to transaction_path(transaction), method: :delete, data: { turbo_confirm: "Bạn có chắc chắn muốn xóa không?", turbo_frame: "_top" }, class: "btn btn-ghost btn-xs text-error font-bold hover:bg-error/10" do %>
-                          Xóa
+                        <%= button_to transaction_path(transaction), method: :delete, data: { turbo_confirm: t("transactions.index.table.delete_confirm"), turbo_frame: "_top" }, class: "btn btn-ghost btn-xs text-error font-bold hover:bg-error/10" do %>
+                          <%= t("transactions.index.table.delete") %>
                         <% end %>
                       </div>
                     </td>
@@ -179,7 +179,10 @@
           <!-- Pagination Footer with showing X to Y of Z status -->
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-6 border-t border-base-200">
             <div class="text-sm opacity-70">
-              Hiển thị <span class="font-bold text-base-content"><%= @pagy.from %></span>-<span class="font-bold text-base-content"><%= @pagy.to %></span> trong tổng số <span class="font-bold text-primary"><%= @pagy.count %></span> giao dịch
+              <%= raw t("transactions.index.showing", 
+                        from: "<span class=\"font-bold text-base-content\">#{@pagy.from}</span>", 
+                        to: "<span class=\"font-bold text-base-content\">#{@pagy.to}</span>", 
+                        count: "<span class=\"font-bold text-primary\">#{@pagy.count}</span>") %>
             </div>
 
             <% if @pagy.pages > 1 %>
@@ -191,15 +194,15 @@
         <% else %>
           <div class="text-center py-12 space-y-4">
             <div class="text-5xl">🛍️</div>
-            <h3 class="text-lg font-bold">Chưa có giao dịch nào</h3>
+            <h3 class="text-lg font-bold"><%= t("transactions.index.no_transactions") %></h3>
             <p class="text-sm opacity-60 max-w-sm mx-auto">
-              Bắt đầu ghi lại các khoản chi tạo của bạn để theo dõi dòng tiền hiệu quả hơn!
+              <%= t("transactions.index.no_transactions_desc") %>
             </p>
             <%= link_to new_transaction_path, class: "btn btn-primary btn-sm gap-2" do %>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
-              Thêm chi tiêu ngay
+              <%= t("transactions.index.add_now") %>
             <% end %>
           </div>
         <% end %>

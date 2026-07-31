@@ -1,38 +1,143 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
+# config/locales/en.yml
 
 en:
   hello: "Hello world"
   pundit:
     errors:
       not_authorized: "You are not authorized to perform this action."
+  common:
+    login: "Log in"
+    logout: "Log out"
+    home_link: "Home"
+    cancel: "Cancel"
+    submit: "Save"
+  layouts:
+    application:
+      title: "QLCT - Expense Manager"
+      brand: "QLCT"
+      tagline: "QLCT - Simple & Elegant Expense Manager"
+      copyright: "Copyright © %{year} - All rights reserved"
+  home:
+    index:
+      greeting: "Welcome back!"
+      managing_for: "Managing finances for"
+      add_transaction: "Add transaction"
+      view_all: "View all"
+      balance_title: "Available Balance (Estimated)"
+      balance_hint: "Based on initial spending limit"
+      limit_title: "Monthly Limit"
+      limit_hint: "Initial default limit"
+      expenses_title: "Total Recorded Expenses"
+      expenses_hint: "Updated in real-time"
+      recent_transactions: "Recent Transactions"
+      description: "Description"
+      time: "Time"
+      amount: "Amount"
+      no_transactions: "You haven't recorded any transactions yet."
+      record_first: "Record your first transaction"
+      monthly_budget: "Monthly Budget"
+      budget_items:
+        food: "🍔 Food & Dining"
+        transport: "🚗 Transport"
+        shopping: "🛍️ Shopping"
+      tip: "Try to record every single expense to get the most accurate financial picture!"
+      intro_badge: "Introducing QLCT App"
+      intro_title: "Smart Expense Management"
+      intro_subtitle: "Smart. Simple."
+      intro_description: "Take full control of your personal finances. Track spending, set realistic budgets, and increase savings with QLCT's intuitive, sleek, and beautiful interface."
+      get_started: "Get started now"
+      learn_more: "Learn more"
+      my_expenses: "My Expenses"
+      just_updated: "Just updated"
+      all_you_need: "Everything you need in one place"
+      all_you_need_sub: "Simple yet powerful tools to help you gain financial clarity."
+      feature_1_title: "Real-time Tracking"
+      feature_1_desc: "Quickly record expenses as you shop. Convenient automatic classification labeling."
+      feature_2_title: "Visual Analytics"
+      feature_2_desc: "Elegant progress bars and vivid data clearly illustrate your monthly spending habits."
+      feature_3_title: "Privacy & Security"
+      feature_3_desc: "Completely secured with password hashing, TLS encryption, and secure session cookies."
+  passwords:
+    edit:
+      title: "Set New Password"
+      subtitle: "Create a secure new password to protect your account."
+      password_label: "New Password"
+      password_placeholder: "Enter new password"
+      confirmation_label: "Confirm New Password"
+      confirmation_placeholder: "Re-enter new password"
+      submit_button: "Save Password"
+    new:
+      title: "Forgot Password?"
+      subtitle: "Don't worry! Enter your email address below and we'll send reset instructions."
+      email_label: "Email Address"
+      submit_button: "Send Reset Link"
+      back_to_login: "Back to Login"
+  registrations:
+    new:
+      title: "Sign Up"
+      subtitle: "Create a new account to start your financial management journey"
+      errors_title: "Please check again:"
+      email_label: "Email Address"
+      password_label: "Password"
+      password_placeholder: "Minimum 6 characters"
+      confirmation_label: "Confirm Password"
+      confirmation_placeholder: "Re-enter password"
+      submit_button: "Create Account"
+      has_account: "Already have an account? Log in"
+  sessions:
+    new:
+      title: "Log in to QLCT"
+      subtitle: "Enter your account credentials below to start managing expenses"
+      email_label: "Email Address"
+      password_label: "Password"
+      forgot_password: "Forgot password?"
+      submit_button: "Log In"
+      no_account: "Don't have an account? Sign up now"
   transactions:
+    created: "Transaction created successfully."
+    updated: "Transaction updated successfully."
+    destroyed: "Transaction deleted successfully."
+    form:
+      errors_title: "Please check the following errors:"
+      classification: "Transaction Type"
+      expense: "Expense"
+      income: "Income"
+      purpose_label: "Purpose"
+      purpose_placeholder: "e.g., Lunch, Gas, Shopping..."
+      amount_label: "Amount"
+      amount_placeholder: "Enter amount (VND)"
+      cancel: "Cancel"
+      submit: "Save"
+    edit:
+      title: "Edit Transaction"
+      subtitle: "Update your transaction details"
+    new:
+      title: "Add New Transaction"
+      subtitle: "Enter transaction details to track and manage your budget"
+    index:
+      title: "Expense List"
+      greeting: "You have recorded %{count} transactions"
+      add_new: "Add Income/Expense"
+      home: "Home"
+      income_title: "Total Income"
+      expense_title: "Total Expenses"
+      balance_title: "Available Balance"
+      history_title: "Transaction History"
+      show_limit: "Show:"
+      rows: "%{count} rows"
+      table:
+        purpose: "Purpose"
+        time: "Time"
+        amount: "Amount"
+        actions: "Actions"
+        edit: "Edit"
+        delete: "Delete"
+        delete_confirm: "Are you sure you want to delete this transaction?"
+        income_badge: "Income"
+      showing: "Showing %{from}-%{to} of %{count} transactions"
+      no_transactions: "No transactions yet"
+      no_transactions_desc: "Start recording your transactions to track cash flow more effectively!"
+      add_now: "Add expense now"
     sort:
       label: "Sort by:"
       date_desc: "Date: Newest"
@@ -57,14 +162,19 @@ en:
   activerecord:
     models:
       user: "User"
+      transaction: "Transaction"
     attributes:
       user:
         email_address: "Email Address"
         password: "Password"
         password_confirmation: "Password Confirmation"
         current_password: "Current Password"
+      transaction:
+        purpose: "Purpose"
+        total: "Amount"
+        created_at: "Created At"
   errors:
     messages:
       blank: "can't be blank"
       confirmation: "doesn't match %{attribute}"
-      wrong_credentials: Try another email address or password.
+      wrong_credentials: "Try another email address or password."
