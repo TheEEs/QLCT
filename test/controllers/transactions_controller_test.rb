@@ -5,9 +5,12 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
     @user = users(:one) || User.take
     # Ensure there are some transactions for sorting tests
     @user.transactions.destroy_all
-    @t1 = @user.transactions.create!(purpose: "Lunch", total: 100000, created_at: 2.days.ago)
-    @t2 = @user.transactions.create!(purpose: "Dinner", total: 250000, created_at: 1.day.ago)
-    @t3 = @user.transactions.create!(purpose: "Coffee", total: 50000, created_at: Time.current)
+    @t1 = @user.transactions.create!(purpose: "Lunch", total: 10000, created_at: 5.days.ago)
+    @t2 = @user.transactions.create!(purpose: "Dinner", total: 2500000, created_at: 4.days.ago)
+    @t3 = @user.transactions.create!(purpose: "Coffee", total: 50000, created_at: 3.days.ago)
+    @t4 = @user.transactions.create!(purpose: "Lunch", total: 100000, created_at: 2.days.ago)
+    @t5 = @user.transactions.create!(purpose: "Dinner", total: 250000, created_at: 1.day.ago)
+    @t6 = @user.transactions.create!(purpose: "Coffee", total: 5000, created_at: Time.current)
   end
 
   test "should require authentication for index" do
@@ -22,7 +25,7 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
 
     # Default sort is created_at desc, so order should be: t3, t2, t1
     transactions = assigns(:transactions).to_a
-    assert_equal [@t3.id, @t2.id, @t1.id], transactions.map(&:id)
+    assert_equal [@t1, @t2, @t3, @t4, @t5, @t6].sort_by(&:created_at).reverse.map(&:id), transactions.map(&:id)
   end
 
   test "should sort by created_at asc" do
@@ -32,7 +35,7 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
 
     # Order should be: t1, t2, t3
     transactions = assigns(:transactions).to_a
-    assert_equal [@t1.id, @t2.id, @t3.id], transactions.map(&:id)
+    assert_equal [@t1, @t2, @t3, @t4, @t5, @t6].sort_by(&:created_at).map(&:id), transactions.map(&:id)
   end
 
   test "should sort by total desc" do
@@ -42,7 +45,7 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
 
     # Order by total desc should be: t2 (250k), t1 (100k), t3 (50k)
     transactions = assigns(:transactions).to_a
-    assert_equal [@t2.id, @t1.id, @t3.id], transactions.map(&:id)
+    assert_equal [@t1, @t2, @t3, @t4, @t5, @t6].sort_by(&:total).reverse.map(&:id), transactions.map(&:id)
   end
 
   test "should sort by total asc" do
@@ -52,22 +55,22 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
 
     # Order by total asc should be: t3 (50k), t1 (100k), t2 (250k)
     transactions = assigns(:transactions).to_a
-    assert_equal [@t3.id, @t1.id, @t2.id], transactions.map(&:id)
+    assert_equal [@t1, @t2, @t3, @t4, @t5, @t6].sort_by(&:total).map(&:id), transactions.map(&:id)
   end
 
   test "should paginate transactions based on items param" do
     sign_in_as(@user)
 
-    # Request with items=2, should only return the first 2 transactions (t3, t2)
-    get transactions_path, params: { items: 2 }
+    # Request with items=5, should only return the first 5 transactions
+    get transactions_path, params: { items: 5 }
     assert_response :success
 
     transactions = assigns(:transactions).to_a
-    assert_equal 2, transactions.size
-    assert_equal [@t3.id, @t2.id], transactions.map(&:id)
+    assert_equal 5, transactions.size
+    assert_equal [@t6.id, @t5.id, @t4.id, @t3.id, @t2.id], transactions.map(&:id)
 
-    # Request page 2 with items=2, should return the remaining transaction (t1)
-    get transactions_path, params: { items: 2, page: 2 }
+    # Request page 2 with items=5, should return the remaining transaction (t1)
+    get transactions_path, params: { items: 5, page: 2 }
     assert_response :success
 
     transactions = assigns(:transactions).to_a
