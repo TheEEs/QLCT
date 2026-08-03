@@ -77,4 +77,27 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, transactions.size
     assert_equal [@t1.id], transactions.map(&:id)
   end
+
+  test "should persist chosen items limit in session" do
+    sign_in_as(@user)
+
+    # Initial request with items=5, should set session[:transaction_items] to 5
+    get transactions_path, params: { items: 5 }
+    assert_response :success
+    assert_equal 5, session[:transaction_items]
+
+    # Subsequent request without items parameter should still use 5 from session
+    get transactions_path
+    assert_response :success
+    transactions = assigns(:transactions).to_a
+    assert_equal 5, transactions.size
+    assert_equal 5, session[:transaction_items]
+
+    # Request with an invalid items limit should ignore it and still use 5 from session
+    get transactions_path, params: { items: 999 }
+    assert_response :success
+    transactions = assigns(:transactions).to_a
+    assert_equal 5, transactions.size
+    assert_equal 5, session[:transaction_items]
+  end
 end
