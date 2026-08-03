@@ -25,7 +25,7 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
 
     # Default sort is created_at desc, so order should be: t3, t2, t1
     transactions = assigns(:transactions).to_a
-    assert_equal [@t1, @t2, @t3, @t4, @t5, @t6].sort_by(&:created_at).reverse.map(&:id), transactions.map(&:id)
+    assert_equal [ @t1, @t2, @t3, @t4, @t5, @t6 ].sort_by(&:created_at).reverse.map(&:id), transactions.map(&:id)
   end
 
   test "should sort by created_at asc" do
@@ -35,7 +35,7 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
 
     # Order should be: t1, t2, t3
     transactions = assigns(:transactions).to_a
-    assert_equal [@t1, @t2, @t3, @t4, @t5, @t6].sort_by(&:created_at).map(&:id), transactions.map(&:id)
+    assert_equal [ @t1, @t2, @t3, @t4, @t5, @t6 ].sort_by(&:created_at).map(&:id), transactions.map(&:id)
   end
 
   test "should sort by total desc" do
@@ -45,7 +45,7 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
 
     # Order by total desc should be: t2 (250k), t1 (100k), t3 (50k)
     transactions = assigns(:transactions).to_a
-    assert_equal [@t1, @t2, @t3, @t4, @t5, @t6].sort_by(&:total).reverse.map(&:id), transactions.map(&:id)
+    assert_equal [ @t1, @t2, @t3, @t4, @t5, @t6 ].sort_by(&:total).reverse.map(&:id), transactions.map(&:id)
   end
 
   test "should sort by total asc" do
@@ -55,7 +55,7 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
 
     # Order by total asc should be: t3 (50k), t1 (100k), t2 (250k)
     transactions = assigns(:transactions).to_a
-    assert_equal [@t1, @t2, @t3, @t4, @t5, @t6].sort_by(&:total).map(&:id), transactions.map(&:id)
+    assert_equal [ @t1, @t2, @t3, @t4, @t5, @t6 ].sort_by(&:total).map(&:id), transactions.map(&:id)
   end
 
   test "should paginate transactions based on items param" do
@@ -67,7 +67,7 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
 
     transactions = assigns(:transactions).to_a
     assert_equal 5, transactions.size
-    assert_equal [@t6.id, @t5.id, @t4.id, @t3.id, @t2.id], transactions.map(&:id)
+    assert_equal [ @t6.id, @t5.id, @t4.id, @t3.id, @t2.id ], transactions.map(&:id)
 
     # Request page 2 with items=5, should return the remaining transaction (t1)
     get transactions_path, params: { items: 5, page: 2 }
@@ -75,7 +75,7 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
 
     transactions = assigns(:transactions).to_a
     assert_equal 1, transactions.size
-    assert_equal [@t1.id], transactions.map(&:id)
+    assert_equal [ @t1.id ], transactions.map(&:id)
   end
 
   test "should persist chosen items limit in session" do
@@ -99,5 +99,32 @@ class TransactionsControllerTest < ActionDispatch::IntegrationTest
     transactions = assigns(:transactions).to_a
     assert_equal 5, transactions.size
     assert_equal 5, session[:transaction_items]
+  end
+
+  test "should create transaction" do
+    sign_in_as(@user)
+    assert_difference("Transaction.count") do
+      post transactions_path, params: { transaction: { purpose: "Buying milk", total: 50000, income: false } }
+    end
+    assert_redirected_to transactions_path
+    assert_equal "Buying milk", Transaction.last.purpose
+    assert_equal 50000, Transaction.last.total
+  end
+
+  test "should update transaction" do
+    sign_in_as(@user)
+    patch transaction_path(@t1), params: { transaction: { purpose: "Updated Lunch", total: 15000 } }
+    assert_redirected_to transactions_path
+    @t1.reload
+    assert_equal "Updated Lunch", @t1.purpose
+    assert_equal 15000, @t1.total
+  end
+
+  test "should destroy transaction" do
+    sign_in_as(@user)
+    assert_difference("Transaction.count", -1) do
+      delete transaction_path(@t1)
+    end
+    assert_redirected_to transactions_path
   end
 end

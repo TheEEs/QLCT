@@ -25,7 +25,7 @@ class PasswordChangesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@user)
     patch password_change_path, params: { user: { current_password: "", password: "new_password", password_confirmation: "new_password" } }
     assert_response :unprocessable_entity
-    
+
     expected_error = @user.class.human_attribute_name(:current_password) + " " + I18n.t("errors.messages.blank")
     assert_match expected_error, response.body
   end
@@ -34,7 +34,7 @@ class PasswordChangesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@user)
     patch password_change_path, params: { user: { current_password: "wrong_password", password: "new_password", password_confirmation: "new_password" } }
     assert_response :unprocessable_entity
-    
+
     expected_error = @user.class.human_attribute_name(:current_password) + " " + I18n.t("password_changes.errors.incorrect")
     assert_match expected_error, response.body
   end
@@ -43,7 +43,7 @@ class PasswordChangesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@user)
     patch password_change_path, params: { user: { current_password: "password", password: "", password_confirmation: "" } }
     assert_response :unprocessable_entity
-    
+
     expected_error = @user.class.human_attribute_name(:password) + " " + I18n.t("errors.messages.blank")
     assert_match expected_error, response.body
   end
@@ -52,7 +52,7 @@ class PasswordChangesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@user)
     patch password_change_path, params: { user: { current_password: "password", password: "new_password", password_confirmation: "different" } }
     assert_response :unprocessable_entity
-    
+
     expected_error = I18n.t("errors.messages.confirmation", attribute: @user.class.human_attribute_name(:password))
     assert_match expected_error, response.body
   end

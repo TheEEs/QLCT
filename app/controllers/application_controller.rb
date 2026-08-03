@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include Authentication
   include Pundit::Authorization
-  #include Pagy::Backend
+  # include Pagy::Backend
 
   before_action :set_locale
 
