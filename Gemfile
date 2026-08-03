@@ -71,3 +71,5 @@ group :test do
 end
 
 gem "pagy", "~> 43.6"
+
+gem "rails-controller-testing", "~> 1.0"
