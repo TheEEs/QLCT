@@ -1,5 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
 
+const NON_DIGIT_REGEX = /\D/g
+const THOUSAND_SEPARATOR_REGEX = /\B(?=(\d{3})+(?!\d))/g
+const DIGIT_REGEX = /\d/g
+
 export default class extends Controller {
   static targets = [ "visible", "hidden" ]
   static values = {
@@ -23,42 +27,31 @@ export default class extends Controller {
     const input = this.visibleTarget
     const selectionStart = input.selectionStart
     const originalValue = input.value
+    const hiddenTarget = this.hiddenTarget 
     
-    // Count how many non-digits (like dots, commas, underscores) were before the selection cursor originally
-    const nonDigitsBeforeCursor = (originalValue.substring(0, selectionStart).match(/\D/g) || []).length
+    const rawValue = originalValue.replace(NON_DIGIT_REGEX, "")
     
-    // Extract only digits
-    const rawValue = originalValue.replace(/\D/g, "")
-    
-    if (rawValue === "") {
+    if (rawValue === ""){
       input.value = ""
-      this.hiddenTarget.value = ""
+      hiddenTarget.value = ""
       return
     }
-    
+
     const formattedValue = this.format(rawValue)
+
+    const numbersBeforeCursor = (originalValue.substring(0, selectionStart).match(DIGIT_REGEX) || []).length
+    const numbersAfterCursor = rawValue.length - numbersBeforeCursor
+
+    const totalSeparators = Math.floor((rawValue.length - 1)/3)
+    const separatorsAfterCursor = Math.floor(numbersAfterCursor / 3)
+
+    const separatorsBeforeCursor = Math.max(totalSeparators - separatorsAfterCursor, 0)
+
+    const newCursorPosition = numbersBeforeCursor + separatorsBeforeCursor * this.separatorValue.length
+
     input.value = formattedValue
-    this.hiddenTarget.value = rawValue
-    
-    // Calculate new cursor position to keep typing smooth
-    const digitsBeforeCursor = selectionStart - nonDigitsBeforeCursor
-    
-    let newSelectionStart = 0
-    let digitCount = 0
-    const separator = this.separatorValue
-    
-    for (let i = 0; i < formattedValue.length; i++) {
-      if (formattedValue[i] !== separator) {
-        digitCount++
-      }
-      if (digitCount > digitsBeforeCursor) {
-        newSelectionStart = i
-        break
-      }
-      newSelectionStart = i + 1
-    }
-    
-    input.setSelectionRange(newSelectionStart, newSelectionStart)
+    hiddenTarget.value = rawValue
+    input.setSelectionRange(newCursorPosition, newCursorPosition)
   }
 
   format(value) {
