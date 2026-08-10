@@ -31,7 +31,7 @@
             </div>
           </div>
           <% 
-            estimated_balance = 50_000_000 + @total_income - @total_expenses
+            estimated_balance =  @total_income - @total_expenses
           %>
           <p class="text-3xl font-extrabold tracking-tight">
             <%= number_to_currency(estimated_balance, unit: "₫", precision: 0, format: "%n %u") %>

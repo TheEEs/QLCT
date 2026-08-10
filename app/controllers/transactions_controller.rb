@@ -10,11 +10,14 @@ class TransactionsController < ApplicationController
     sort_direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
 
     # Validate items per page to prevent abnormally large request sizes
-    allowed_items = [5, 10, 20, 50, 100]
-    items_per_page = allowed_items.include?(params[:items].to_i) ? params[:items].to_i : (Pagy::DEFAULT[:items] || 10)
+    allowed_items = [ 5, 10, 20, 50, 100 ]
+    if params[:items].present? && allowed_items.include?(params[:items].to_i)
+      session[:transaction_items] = params[:items].to_i
+    end
+    items_per_page = session[:transaction_items] || Pagy::DEFAULT[:items] || 10
 
     transactions_scope = policy_scope(Current.user.transactions)
-    
+
     # Calculate separate totals for income, expense, and balance
     @total_income = transactions_scope.where(income: true).sum(:total)
     @total_expense = transactions_scope.where(income: false).sum(:total)

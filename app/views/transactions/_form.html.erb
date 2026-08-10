@@ -34,10 +34,15 @@
     <%= form.text_field :purpose, autofocus: true, placeholder: t("transactions.form.purpose_placeholder"), class: "input input-bordered w-full focus:input-primary transition-all duration-200" %>
   </div>
 
-  <div class="form-control">
+  <div class="form-control" data-controller="amount-format" data-amount-format-separator-value=".">
     <%= form.label :total, t("transactions.form.amount_label"), class: "label-text font-semibold text-xs mb-1.5 opacity-70" %>
     <div class="relative">
-      <%= form.number_field :total, placeholder: t("transactions.form.amount_placeholder"), min: 1, class: "input input-bordered w-full pr-12 focus:input-primary transition-all duration-200" %>
+      <%= form.hidden_field :total, data: { amount_format_target: "hidden" } %>
+      <%= text_field_tag :formatted_total, nil,
+                         placeholder: t("transactions.form.amount_placeholder"),
+                         inputmode: "numeric",
+                         class: "input input-bordered w-full pr-12 focus:input-primary transition-all duration-200",
+                         data: { amount_format_target: "visible", action: "input->amount-format#formatInput" } %>
       <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-sm font-semibold opacity-50">
         ₫
       </div>

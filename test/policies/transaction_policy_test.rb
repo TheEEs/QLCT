@@ -4,7 +4,7 @@ class TransactionPolicyTest < ActiveSupport::TestCase
   setup do
     @user1 = users(:one) || User.create!(email_address: "user1@example.com", password: "password")
     @user2 = User.create!(email_address: "user2@example.com", password: "password")
-    
+
     @user1.transactions.destroy_all
     @user2.transactions.destroy_all
 
